@@ -29,7 +29,9 @@ class Game(IGameEngine):
             raise Exception("Tryied to choose index while it's 'insrter' turn")
         if index < 0 or index > len(self.current_word):
             raise Exception("Index is out of range")
+        self.turn = Role.INSERTER
         self.choosen_index = index
+        return True
 
     def apply_letter(self, letter: str) -> bool:
         if self.turn != Role.INSERTER:
@@ -38,8 +40,27 @@ class Game(IGameEngine):
             raise Exception("Letter is not in the alphabet")
         self.choosen_letter = letter
         self.current_word.insert(self.choosen_index, letter)
-        if TwinChecker.check_for_close_twins(self.get_current_word, self.choosen_index):
+        if TwinChecker.check_for_close_twins(self.get_current_word(), self.choosen_index):
             self.game_status = GameStatus.P1_WINS_TWINS
         elif len(self.current_word) >= self.max_length:
             self.game_status = GameStatus.P2_WINS_LIMIT
+        self.turn = Role.POINTER
         return True
+    
+    def clone(self):
+        cloned_game = Game(list(self.alphabet), self.max_length)
+        cloned_game.current_word = list(self.current_word)
+        cloned_game.game_status = self.game_status
+        cloned_game.turn = self.turn
+        cloned_game.chosen_index = self.chosen_index
+        cloned_game.chosen_letter = self.chosen_letter
+        return cloned_game
+    
+    def get_legal_moves(self) -> List:
+        if self.game_status != GameStatus.ONGOING:
+            return []
+            
+        if self.turn == Role.POINTER:
+            return list(range(len(self.current_word) + 1))
+        elif self.turn == Role.INSERTER:
+            return list(self.alphabet)
