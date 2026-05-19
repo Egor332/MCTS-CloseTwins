@@ -32,4 +32,3 @@ class Player(ABC):
         Represent move of Player 2: returns letter
         """
         pass
-
