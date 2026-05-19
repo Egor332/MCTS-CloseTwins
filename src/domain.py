@@ -14,6 +14,11 @@ class GameStatus(Enum):
     P1_WINS_TWINS = 1
     P2_WINS_LIMIT = 2
 
+class GameMode(Enum):
+    HUMAN_INSERTER = 1
+    HUMAN_POINTER = 2
+    AI_VS_AI = 3   
+
 class Player(ABC):
     def __init__(self, name: str, role: Role):
         self.name = name
