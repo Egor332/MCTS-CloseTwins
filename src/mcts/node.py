@@ -45,7 +45,7 @@ class Node:
     def update(self, result: GameStatus):
         self.visits += 1
 
-        player_who_moved = Role.POINTER if self.state.turn == Role.INSERTER else Role.INSERTE
+        player_who_moved = Role.POINTER if self.state.turn == Role.INSERTER else Role.INSERTER
 
         if player_who_moved == Role.POINTER and result == GameStatus.P1_WINS_TWINS:
             self.wins += 1
@@ -60,8 +60,3 @@ class Node:
         exploration_term = exploration_constant * math.sqrt(math.log(self.parent.visits) / self.visits)
 
         return exploitation_term + exploration_term
-        
-
-
-        
-    
