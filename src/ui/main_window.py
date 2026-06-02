@@ -4,7 +4,7 @@ from src.ui.setup_screen import SetupScreen
 from src.ui.game_screen import GameScreen
 from src.engine.game import Game
 import random
-
+from src.mcts.mcts import MCTS
 
 class SimpleAI:
     def get_best_move(self, engine):
@@ -38,8 +38,8 @@ class MainWindow(QMainWindow):
         alphabet = [chr(ord('a') + i) for i in range(alphabet_size)]
         engine = Game(alphabet, max_length)
         
-        ai_pointer = SimpleAI()
-        ai_inserter = SimpleAI()
+        ai_pointer = MCTS(1000)
+        ai_inserter = MCTS(1000)
         
         self.stack.setCurrentWidget(self.game_screen)
         self.game_screen.start_game(engine, mode, ai_pointer, ai_inserter)

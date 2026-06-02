@@ -2,7 +2,7 @@ import math
 import random
 import numpy as np
 from typing import List, Optional 
-from domain import GameStatus, Role
+from src.domain import GameStatus, Role
 
 class Node:
     def __init__(self, state, parent=None, move=None, rng=None):

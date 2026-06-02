@@ -12,8 +12,8 @@ class Game(IGameEngine):
         self.game_status = GameStatus.ONGOING
 
         self.turn = Role.POINTER
-        self.choosen_index = None
-        self.choosen_letter = None
+        self.chosen_index = None
+        self.chosen_letter = None
 
     def get_current_word(self) -> str:
         return "".join(self.current_word)
@@ -30,7 +30,7 @@ class Game(IGameEngine):
         if index < 0 or index > len(self.current_word):
             raise Exception("Index is out of range")
         self.turn = Role.INSERTER
-        self.choosen_index = index
+        self.chosen_index = index
         return True
 
     def apply_letter(self, letter: str) -> bool:
@@ -38,9 +38,9 @@ class Game(IGameEngine):
             raise Exception("Tryied to insert letter while it's 'pointer' turn")
         if letter not in self.alphabet:
             raise Exception("Letter is not in the alphabet")
-        self.choosen_letter = letter
-        self.current_word.insert(self.choosen_index, letter)
-        if TwinChecker.check_for_close_twins(self.get_current_word(), self.choosen_index):
+        self.chosen_letter = letter
+        self.current_word.insert(self.chosen_index, letter)
+        if TwinChecker.check_for_close_twins(self.get_current_word(), self.chosen_index):
             self.game_status = GameStatus.P1_WINS_TWINS
         elif len(self.current_word) >= self.max_length:
             self.game_status = GameStatus.P2_WINS_LIMIT

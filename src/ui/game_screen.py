@@ -79,7 +79,7 @@ class GameScreen(QWidget):
     def update_display(self):
         word = self.engine.get_current_word()
         turn = self.engine.turn
-        pending = self.engine.choosen_index
+        pending = self.engine.chosen_index
         
         if self.waiting_for_input:
             if turn == Role.POINTER:
@@ -166,7 +166,7 @@ class GameScreen(QWidget):
     def _insert_letter(self, letter: str):
         self.hide_cursor()
         try:
-            pending = self.engine.choosen_index
+            pending = self.engine.chosen_index
             self.engine.apply_letter(letter)
             self.move_history.append(('INSERTER', f"inserted '{letter}' at {pending}"))
             self.update_display()
@@ -209,7 +209,7 @@ class GameScreen(QWidget):
     
     def _process_ai_inserter_move(self):
         letter = self.ai_inserter.get_best_move(self.engine)
-        pending = self.engine.choosen_index
+        pending = self.engine.chosen_index
         self.engine.apply_letter(letter)
         self.move_history.append(('INSERTER (AI)', f"inserted '{letter}' at {pending}"))
         self.update_display()

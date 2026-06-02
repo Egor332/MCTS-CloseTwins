@@ -1,16 +1,16 @@
 import numpy as np
 import math
-from domain import GameStatus, Role
-from engine.game import Game
-from mcts.node import Node
+from src.domain import GameStatus, Role
+from src.engine.game import Game
+from src.mcts.node import Node
 
 class MCTS:
-    def __init__(self, iterations: int = 100, exploratoin_cost: float = math.sqrt(2), rng=None):
+    def __init__(self, iterations: int = 100, exploration_cost: float = math.sqrt(2), rng=None):
         self.iterations = iterations
-        self.exploration_cost = self.exploration_cost
+        self.exploration_cost = exploration_cost
         self.rng = rng if rng is not None else np.random.default_rng()
 
-    def search(self, initial_state: Game) -> object:
+    def get_best_move(self, initial_state: Game) -> object:
         root = Node(initial_state.clone(), rng=self.rng)
 
         for _ in range(self.iterations):
@@ -22,7 +22,10 @@ class MCTS:
             simulation_result = self._simulate(node.state)
 
             self._backpropagate(node, simulation_result)
-        return self._get_best_move(root)
+        
+        if not root.children:
+            return None
+        return self._get_best_move(root).move
 
     def _select(self, node: Node) -> Node:
         while (not node.is_terminal_node()) and node.is_fully_expanded():
