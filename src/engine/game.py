@@ -1,7 +1,7 @@
-from IGameEngine import IGameEngine
+from src.IGameEngine import IGameEngine
 from typing import List
-from domain import GameStatus, Role
-from twin_checker import TwinChecker
+from src.domain import GameStatus, Role
+from src.engine.twin_checker import TwinChecker
 
 class Game(IGameEngine):
     def __init__(self, alphabet: List[str], max_length: int):
