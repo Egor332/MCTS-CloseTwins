@@ -21,7 +21,7 @@ class Node:
 
         self.untried_moves: list = []
         if self.state.game_status == GameStatus.ONGOING:
-            self.untried_moves = self.state.get_legal_moves()
+            self.untried_moves = sorted(self.state.get_legal_moves())
 
         self.rng = rng if rng is not None else np.random.default_rng()
 

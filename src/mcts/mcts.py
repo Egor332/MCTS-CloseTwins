@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from src.domain import GameStatus
+from src.domain import GameStatus, Role
 from src.engine.game import Game
 from src.mcts.node import Node
 from src.mcts.strategies.selection import SelectionStrategy
@@ -57,10 +57,9 @@ class MCTS:
         """If any child is a proven win for the current mover, return it."""
         if not node.children:
             return None
+        mover = node.state.turn
         for child in node.children:
             if child.proven_status is not None and child.proven_status != GameStatus.ONGOING:
-                from src.domain import Role
-                mover = node.state.turn
                 if mover == Role.POINTER and child.proven_status == GameStatus.P1_WINS_TWINS:
                     return child
                 if mover == Role.INSERTER and child.proven_status == GameStatus.P2_WINS_LIMIT:

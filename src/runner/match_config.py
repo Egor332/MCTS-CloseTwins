@@ -38,8 +38,12 @@ def load_match_configs(yaml_path: str | Path) -> list[MatchConfig]:
     with open(path, "r", encoding="utf-8") as f:
         raw = yaml.safe_load(f)
 
+    matches = (raw or {}).get("matches")
+    if not isinstance(matches, list):
+        raise ValueError(f"Invalid match config in {path}: expected top-level 'matches' list")
+
     configs: list[MatchConfig] = []
-    for entry in raw["matches"]:
+    for entry in matches:
         configs.append(
             MatchConfig(
                 name=entry["name"],

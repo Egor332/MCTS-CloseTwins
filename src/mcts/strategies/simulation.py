@@ -19,7 +19,7 @@ class RandomSimulation(SimulationStrategy):
         current = game.clone()
 
         while current.game_status == GameStatus.ONGOING:
-            legal_moves = current.get_legal_moves()
+            legal_moves = sorted(current.get_legal_moves())
             if not legal_moves:
                 break
 
@@ -64,7 +64,7 @@ class HeuristicSimulation(SimulationStrategy):
 
     @staticmethod
     def _inserter_move(game: Game, rng: np.random.Generator) -> None:
-        letters = game.get_legal_moves()
+        letters = sorted(game.get_legal_moves())
         index = game.chosen_index
         word = game.get_current_word()
 
