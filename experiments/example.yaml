@@ -1,0 +1,20 @@
+matches:
+  - name: "uct_vs_uct_baseline"
+    alphabet_size: 3
+    max_word_length: 15
+    num_games: 50
+    base_seed: 42
+    pointer:
+      name: "UCT"
+      iterations: 500
+      selection: "uct"
+      simulation: "random"
+      backpropagation: "standard"
+      exploration_constant: 1.414
+    inserter:
+      name: "UCT"
+      iterations: 500
+      selection: "uct"
+      simulation: "random"
+      backpropagation: "standard"
+      exploration_constant: 1.414
