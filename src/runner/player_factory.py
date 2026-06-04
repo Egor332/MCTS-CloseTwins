@@ -7,6 +7,7 @@ from src.mcts.strategies.selection import (
     SelectionStrategy,
     UCTStrategy,
     UCB1TunedStrategy,
+    ProgressiveBias,
 )
 from src.mcts.strategies.simulation import (
     SimulationStrategy,
@@ -58,7 +59,10 @@ def build_mcts(config: PlayerConfig, rng: np.random.Generator | None = None) -> 
             f"Available: {list(BACKPROPAGATION_REGISTRY)}"
         )
 
-    selection = sel_cls(exploration_constant=config.exploration_constant)
+    selection: SelectionStrategy = sel_cls(exploration_constant=config.exploration_constant)
+    if config.progressive_bias:
+        selection = ProgressiveBias(base=selection, weight=config.bias_weight)
+
     simulation = sim_cls()
     backpropagation = bp_cls()
 

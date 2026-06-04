@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass
 
 import numpy as np
@@ -16,15 +17,28 @@ class GameResult:
     match_name: str
     game_id: int
     seed: int
-    pointer_name: str
-    inserter_name: str
     alphabet_size: int
     max_word_length: int
     winner: str
     num_turns: int
     final_word: str
+    duration_seconds: float
+    pointer_name: str
     pointer_iterations: int
+    pointer_selection: str
+    pointer_simulation: str
+    pointer_backpropagation: str
+    pointer_exploration_constant: float
+    pointer_progressive_bias: bool
+    pointer_bias_weight: float
+    inserter_name: str
     inserter_iterations: int
+    inserter_selection: str
+    inserter_simulation: str
+    inserter_backpropagation: str
+    inserter_exploration_constant: float
+    inserter_progressive_bias: bool
+    inserter_bias_weight: float
 
 
 def play_game(
@@ -61,22 +75,38 @@ def run_match(config: MatchConfig) -> list[GameResult]:
         ai_inserter = build_mcts(config.inserter, rng=rng_inserter)
 
         engine = Game(alphabet, config.max_word_length)
+
+        t0 = time.perf_counter()
         status, num_turns, final_word = play_game(engine, ai_pointer, ai_inserter)
+        duration = time.perf_counter() - t0
 
         results.append(
             GameResult(
                 match_name=config.name,
                 game_id=game_id,
                 seed=seed,
-                pointer_name=config.pointer.name,
-                inserter_name=config.inserter.name,
                 alphabet_size=config.alphabet_size,
                 max_word_length=config.max_word_length,
                 winner=status.name,
                 num_turns=num_turns,
                 final_word=final_word,
+                duration_seconds=round(duration, 4),
+                pointer_name=config.pointer.name,
                 pointer_iterations=config.pointer.iterations,
+                pointer_selection=config.pointer.selection,
+                pointer_simulation=config.pointer.simulation,
+                pointer_backpropagation=config.pointer.backpropagation,
+                pointer_exploration_constant=config.pointer.exploration_constant,
+                pointer_progressive_bias=config.pointer.progressive_bias,
+                pointer_bias_weight=config.pointer.bias_weight,
+                inserter_name=config.inserter.name,
                 inserter_iterations=config.inserter.iterations,
+                inserter_selection=config.inserter.selection,
+                inserter_simulation=config.inserter.simulation,
+                inserter_backpropagation=config.inserter.backpropagation,
+                inserter_exploration_constant=config.inserter.exploration_constant,
+                inserter_progressive_bias=config.inserter.progressive_bias,
+                inserter_bias_weight=config.inserter.bias_weight,
             )
         )
 

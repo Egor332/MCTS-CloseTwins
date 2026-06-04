@@ -28,6 +28,8 @@ def _parse_player(data: dict) -> PlayerConfig:
         simulation=data.get("simulation", "random"),
         backpropagation=data.get("backpropagation", "standard"),
         exploration_constant=data.get("exploration_constant", math.sqrt(2)),
+        progressive_bias=data.get("progressive_bias", False),
+        bias_weight=data.get("bias_weight", 1.0),
     )
 
 

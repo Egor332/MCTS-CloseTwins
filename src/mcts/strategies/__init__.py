@@ -2,6 +2,7 @@ from src.mcts.strategies.selection import (
     SelectionStrategy,
     UCTStrategy,
     UCB1TunedStrategy,
+    ProgressiveBias,
 )
 from src.mcts.strategies.simulation import (
     SimulationStrategy,

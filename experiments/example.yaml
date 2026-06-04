@@ -11,6 +11,7 @@ matches:
       simulation: "random"
       backpropagation: "standard"
       exploration_constant: 1.414
+      progressive_bias: false
     inserter:
       name: "UCT"
       iterations: 500
@@ -18,3 +19,4 @@ matches:
       simulation: "random"
       backpropagation: "standard"
       exploration_constant: 1.414
+      progressive_bias: false

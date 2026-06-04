@@ -25,6 +25,8 @@ Każde AI konfiguruje się niezależnie, łącząc trzy wymienialne strategie:
 | **Symulacja** | `random` (losowy rollout), `heuristic` (filtruje ruchy tworzące bliźniaki) |
 | **Propagacja** | `standard` (klasyczna), `solver` (MCTS-Solver z propagacją udowodnionych węzłów) |
 
+Dodatkowo do dowolnej strategii selekcji można włączyć **Progressive Bias** (`progressive_bias: true`), który dodaje heurystyczny składnik do formuły UCT. Składnik ten faworyzuje bezpieczniejsze ruchy na początku (mało wizyt) i zanika w miarę zbierania statystyk. Parametr `bias_weight` kontroluje początkową siłę wpływu heurystyki.
+
 ---
 
 ## Wymagania
@@ -87,12 +89,14 @@ matches:
     num_games: 100
     base_seed: 42
     pointer:
-      name: "UCB1-Tuned + Solver"
+      name: "UCB1-Tuned + Solver + PB"
       iterations: 1000
       selection: "ucb1_tuned"      # uct | ucb1_tuned
       simulation: "heuristic"      # random | heuristic
       backpropagation: "solver"    # standard | solver
       exploration_constant: 1.414
+      progressive_bias: true       # true | false (domyslnie false)
+      bias_weight: 1.0             # sila progressive bias (domyslnie 1.0)
     inserter:
       name: "UCT"
       iterations: 1000
@@ -100,6 +104,7 @@ matches:
       simulation: "random"
       backpropagation: "standard"
       exploration_constant: 1.414
+      progressive_bias: false
 ```
 
 ### Kolumny w wynikowym CSV
@@ -109,13 +114,20 @@ matches:
 | `match_name` | Nazwa meczu z configu |
 | `game_id` | Numer partii (0-indexed) |
 | `seed` | Ziarno RNG użyte w tej partii |
-| `pointer_name` / `inserter_name` | Nazwa AI |
 | `alphabet_size` | Rozmiar alfabetu |
 | `max_word_length` | Limit długości słowa |
 | `winner` | `P1_WINS_TWINS` lub `P2_WINS_LIMIT` |
 | `num_turns` | Liczba ruchów w partii |
 | `final_word` | Słowo na koniec gry |
+| `duration_seconds` | Czas trwania partii (sekundy) |
+| `pointer_name` / `inserter_name` | Nazwa AI |
 | `pointer_iterations` / `inserter_iterations` | Liczba iteracji MCTS |
+| `pointer_selection` / `inserter_selection` | Strategia selekcji (`uct` / `ucb1_tuned`) |
+| `pointer_simulation` / `inserter_simulation` | Strategia symulacji (`random` / `heuristic`) |
+| `pointer_backpropagation` / `inserter_backpropagation` | Strategia propagacji (`standard` / `solver`) |
+| `pointer_exploration_constant` / `inserter_exploration_constant` | Stała eksploracji |
+| `pointer_progressive_bias` / `inserter_progressive_bias` | Czy włączony Progressive Bias |
+| `pointer_bias_weight` / `inserter_bias_weight` | Waga Progressive Bias |
 
 ---
 
@@ -134,7 +146,7 @@ src/
 │   ├── mcts.py                     # Algorytm MCTS (orkiestrator)
 │   ├── node.py                     # Węzeł drzewa MCTS
 │   └── strategies/
-│       ├── selection.py            # UCTStrategy, UCB1TunedStrategy
+│       ├── selection.py            # UCTStrategy, UCB1TunedStrategy, ProgressiveBias
 │       ├── simulation.py           # RandomSimulation, HeuristicSimulation
 │       └── backpropagation.py      # StandardBackprop, SolverBackprop
 ├── runner/
