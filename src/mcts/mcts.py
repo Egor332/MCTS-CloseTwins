@@ -3,6 +3,7 @@ import math
 from src.domain import GameStatus, Role
 from src.engine.game import Game
 from src.mcts.node import Node
+from src.mcts.config import MCTSConfig
 
 class MCTS:
     def __init__(self, iterations: int = 100, exploration_cost: float = math.sqrt(2), rng=None):
@@ -14,6 +15,9 @@ class MCTS:
         root = Node(initial_state.clone(), rng=self.rng)
 
         for _ in range(self.iterations):
+            if MCTSConfig.USE_SOLVER and root.proven_winner is not None:
+                break
+            
             node = self._select(root)
 
             if (not node.is_terminal_node()) and (not node.is_fully_expanded()):
@@ -52,8 +56,27 @@ class MCTS:
         return current_game.game_status
 
     def _backpropagate(self, node: Node, result: GameStatus):
+        winner = None
+        if result == GameStatus.P1_WINS_TWINS:
+            winner = Role.POINTER
+        elif result == GameStatus.P2_WINS_LIMIT:
+            winner = Role.INSERTER
+
         while node is not None:
             node.update(result)
+            
+            if MCTSConfig.USE_SOLVER and node.proven_winner is None:
+                if node.is_terminal_node():
+                    node.proven_winner = winner
+                else:
+                    current_turn = node.state.turn
+                    other_turn = Role.INSERTER if current_turn == Role.POINTER else Role.POINTER
+                    
+                    if any(c.proven_winner == current_turn for c in node.children):
+                        node.proven_winner = current_turn
+                    elif node.is_fully_expanded() and all(c.proven_winner == other_turn for c in node.children):
+                        node.proven_winner = other_turn
+                        
             node = node.parent
 
     def _get_best_move(self, root: Node):

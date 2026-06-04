@@ -3,6 +3,7 @@ import random
 import numpy as np
 from typing import List, Optional 
 from src.domain import GameStatus, Role
+from src.mcts.config import MCTSConfig
 
 class Node:
     def __init__(self, state, parent=None, move=None, rng=None):
@@ -19,6 +20,7 @@ class Node:
             self.untried_moves = self.state.get_legal_moves()
 
         self.rng = rng if rng is not None else np.random.default_rng()
+        self.proven_winner: Optional[Role] = None
 
     def is_fully_expanded(self) -> bool:
         return len(self.untried_moves) == 0
@@ -53,6 +55,12 @@ class Node:
             self.wins += 1
 
     def get_uct_score(self, exploration_constant: float = math.sqrt(2)) -> float:
+        if MCTSConfig.USE_SOLVER and self.proven_winner is not None:
+            if self.parent and self.proven_winner == self.parent.state.turn:
+                return float('inf')
+            else:
+                return float('-inf')
+
         if self.visits == 0:
             return float('inf')
         
