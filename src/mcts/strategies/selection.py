@@ -43,7 +43,7 @@ class UCB1TunedStrategy(SelectionStrategy):
         variance = node.sum_of_squared_results / node.visits - mean ** 2
         v = variance + math.sqrt(2 * math.log(node.parent.visits) / node.visits)
 
-        exploration = math.sqrt(
+        exploration = self.c * math.sqrt(
             (math.log(node.parent.visits) / node.visits) * min(0.25, v)
         )
         return mean + exploration
