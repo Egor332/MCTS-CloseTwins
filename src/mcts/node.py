@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 import numpy as np
 from typing import List, Optional
 
@@ -25,7 +27,6 @@ class Node:
             self.untried_moves = sorted(self.state.get_legal_moves())
 
         self.rng = rng if rng is not None else np.random.default_rng()
-        self.proven_winner: Optional[Role] = None
 
     def is_fully_expanded(self) -> bool:
         return len(self.untried_moves) == 0
@@ -63,12 +64,15 @@ class Node:
             win_value = 1.0
 
         self.sum_of_squared_results += win_value * win_value
+
     def get_uct_score(self, exploration_constant: float = math.sqrt(2)) -> float:
-        if MCTSConfig.USE_SOLVER and self.proven_winner is not None:
-            if self.parent and self.proven_winner == self.parent.state.turn:
-                return float('inf')
-            else:
-                return float('-inf')
+        if MCTSConfig.USE_SOLVER and self.proven_status is not None:
+            mover = self.parent.state.turn if self.parent else None
+            is_mover_win = (
+                (mover == Role.POINTER and self.proven_status == GameStatus.P1_WINS_TWINS)
+                or (mover == Role.INSERTER and self.proven_status == GameStatus.P2_WINS_LIMIT)
+            )
+            return float('inf') if is_mover_win else float('-inf')
 
         if self.visits == 0:
             return float('inf')

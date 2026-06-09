@@ -6,13 +6,31 @@ from src.engine.game import Game
 from src.runner.player_config import PlayerConfig
 from src.runner.player_factory import build_mcts
 
-DEFAULT_PLAYER = PlayerConfig(
-    name="UCT",
-    iterations=1000,
-    selection="uct",
-    simulation="random",
-    backpropagation="standard",
-)
+DIFFICULTY_PRESETS: dict[str, PlayerConfig] = {
+    "easy": PlayerConfig(
+        name="MCTS-Easy",
+        iterations=500,
+        selection="uct",
+        simulation="random",
+        backpropagation="standard",
+    ),
+    "medium": PlayerConfig(
+        name="MCTS-Medium",
+        iterations=2000,
+        selection="uct",
+        simulation="random",
+        backpropagation="standard",
+    ),
+    "hard": PlayerConfig(
+        name="MCTS-Solver-Hard",
+        iterations=2000,
+        selection="uct",
+        simulation="random",
+        backpropagation="solver",
+    ),
+}
+
+DEFAULT_PLAYER = DIFFICULTY_PRESETS["medium"]
 
 
 class MainWindow(QMainWindow):
@@ -37,12 +55,13 @@ class MainWindow(QMainWindow):
 
         self.stack.setCurrentWidget(self.setup_screen)
 
-    def start_game(self, mode, alphabet_size, max_length):
+    def start_game(self, mode, alphabet_size, max_length, difficulty="medium"):
         alphabet = [chr(ord('a') + i) for i in range(alphabet_size)]
         engine = Game(alphabet, max_length)
 
-        ai_pointer = build_mcts(DEFAULT_PLAYER)
-        ai_inserter = build_mcts(DEFAULT_PLAYER)
+        config = DIFFICULTY_PRESETS.get(difficulty, DEFAULT_PLAYER)
+        ai_pointer = build_mcts(config)
+        ai_inserter = build_mcts(config)
 
         self.stack.setCurrentWidget(self.game_screen)
         self.game_screen.start_game(engine, mode, ai_pointer, ai_inserter)

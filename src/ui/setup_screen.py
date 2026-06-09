@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpinBox, QMessageBox
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpinBox, QComboBox, QMessageBox
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont
 from src.domain import GameMode
@@ -6,7 +6,7 @@ from src.ui.components import create_button, create_label, UIConfig
 
 
 class SetupScreen(QWidget):
-    game_started = pyqtSignal(GameMode, int, int)
+    game_started = pyqtSignal(GameMode, int, int, str)
     
     def __init__(self):
         super().__init__()
@@ -63,6 +63,16 @@ class SetupScreen(QWidget):
         length_layout.addWidget(length_label)
         length_layout.addWidget(self.length_spin)
         
+        # Difficulty
+        difficulty_layout = QHBoxLayout()
+        difficulty_label = create_label("AI difficulty:", style_type="normal")
+        self.difficulty_combo = QComboBox()
+        self.difficulty_combo.addItems(["Easy", "Medium", "Hard"])
+        self.difficulty_combo.setCurrentIndex(1)
+        self.difficulty_combo.setFont(QFont(*UIConfig.FONT_MONO_MD))
+        difficulty_layout.addWidget(difficulty_label)
+        difficulty_layout.addWidget(self.difficulty_combo)
+        
         # Buttons
         self.start_btn = create_button("Start Game", style_type="primary")
         self.start_btn.clicked.connect(self.start_game)
@@ -74,6 +84,7 @@ class SetupScreen(QWidget):
         settings_layout.addSpacing(20)
         settings_layout.addLayout(alphabet_layout)
         settings_layout.addLayout(length_layout)
+        settings_layout.addLayout(difficulty_layout)
         settings_layout.addSpacing(20)
         settings_layout.addWidget(self.start_btn)
         settings_layout.addWidget(back_btn)
@@ -99,6 +110,7 @@ class SetupScreen(QWidget):
         self.inserter_btn.hide()
         self.pointer_btn.hide()
         self.ai_btn.hide()
+        self.difficulty_combo.setVisible(mode != GameMode.AI_VS_AI)
         self.settings_panel.show()
     
     def back_to_mode_selection(self):
@@ -109,10 +121,12 @@ class SetupScreen(QWidget):
         self.ai_btn.show()
     
     def start_game(self):
+        difficulty = self.difficulty_combo.currentText().lower()
         self.game_started.emit(
             self.selected_mode,
             self.alphabet_spin.value(),
-            self.length_spin.value()
+            self.length_spin.value(),
+            difficulty,
         )
     
     def show_instructions(self):
