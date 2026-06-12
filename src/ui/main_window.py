@@ -22,11 +22,11 @@ DIFFICULTY_PRESETS: dict[str, PlayerConfig] = {
         backpropagation="standard",
     ),
     "hard": PlayerConfig(
-        name="MCTS-Solver-Hard",
+        name="MCTS-Hard",
         iterations=2000,
         selection="uct",
         simulation="random",
-        backpropagation="solver",
+        backpropagation="standard",
     ),
 }
 
