@@ -35,14 +35,14 @@
     \centering
     {\fontsize{60}{30}\selectfont \textbf{Metody Sztucznej Inteligencji 2} \par}
     \vspace{1.5cm}
-    {\fontsize{30}{20}\selectfont Projekt 2 -- raport ko\'ncowy \par}
+    {\fontsize{30}{20}\selectfont Projekt 2 -- raport końcowy \par}
     \vspace{5cm}
-    {\fontsize{36}{20}\selectfont \textbf{Zastosowanie algorytmu Monte Carlo Tree Search w grze w unikanie ciasnych bli\'zniak\'ow} \par}
+    {\fontsize{36}{20}\selectfont \textbf{Zastosowanie algorytmu Monte Carlo Tree Search w grze w unikanie ciasnych bliźniaków} \par}
     \vspace{7.5cm}
 
     {\fontsize{26}{20}\selectfont
     Yahor Kachanouski\\
-    Mi\l osz Wysocki
+    Miłosz Wysocki
     \par}
     \vspace{0.5cm}
     \vfill
@@ -56,135 +56,142 @@
 % --------------------------------------------------------------------------------------------
 \section{Streszczenie}
 
-W ramach projektu zaimplementowano i przebadano rodzin\k e algorytm\'ow z grupy
+W ramach projektu zaimplementowano i przebadano rodzinę algorytmów z grupy
 Monte Carlo Tree Search (MCTS) zastosowanych do asymetrycznej, dwuosobowej gry
-w unikanie ciasnych bli\'zniak\'ow. Gra polega na sekwencyjnym budowaniu s\l owa
-nad ustalonym alfabetem~$\Sigma$ a\.z do osi\k agni\k ecia maksymalnej d\l ugo\'sci~$L$:
-gracz \emph{wskazuj\k acy} (Pointer) wybiera pozycj\k e wstawienia, a gracz
-\emph{wstawiaj\k acy} (Inserter) okre\'sla liter\k e. Zwyci\k esca jest ten, kto
-zmusi przeciwnika do utworzenia podci\k agu postaci $xx$ (ciasnego bli\'zniaka),
-albo doprowadzi s\l owo do d\l ugo\'sci~$L$ bez takiego podci\k agu.
+w unikanie ciasnych bliźniaków. Gra polega na sekwencyjnym budowaniu słowa
+nad ustalonym alfabetem~$\Sigma$ aż do osiągnięcia maksymalnej długości~$L$:
+gracz \emph{wskazujący} (Pointer) wybiera pozycję wstawienia, a gracz
+\emph{wstawiający} (Inserter) określa literę. Zwycięża ten, kto zmusi
+przeciwnika do utworzenia podciągu postaci $xx$ (ciasnego bliźniaka),
+albo doprowadzi słowo do długości~$L$ bez takiego podciągu.
 
-Zaimplementowano modu\l owy framework MCTS w kt\'orym fazy
-\emph{selekcji}, \emph{symulacji} i \emph{propagacji wstecznej} s\k a wymiennymi
-strategiami. Por\'ownano klasyczny algorytm UCT~\cite{Kocsis2006}, wariant
-UCB1-Tuned~\cite{Auer2002}, MCTS-Solver z propagacj\k a udowodnionych
-w\k ez\l\'ow~\cite{Winands2008} oraz dwie heurystyki dziedzinowe
-(filtruj\k aca symulacja oraz Progressive Bias~\cite{Chaslot2008}).
+Zaimplementowano modułowy framework MCTS, w którym fazy
+\emph{selekcji}, \emph{symulacji} i \emph{propagacji wstecznej} są wymiennymi
+strategiami. Porównano klasyczny algorytm UCT~\cite{Kocsis2006}, wariant
+UCB1-Tuned~\cite{Auer2002}, MCTS-Solver z propagacją udowodnionych
+węzłów~\cite{Winands2008} oraz dwie heurystyki dziedzinowe -- filtrującą
+symulację i Progressive Bias~\cite{Chaslot2008}.
 
 Kluczowy eksperyment to dwuwymiarowa siatka konfiguracji
-$|\Sigma|\in\{3,\dots,10\}\times L\in\{5,\dots,40\}$, dla ka\.zdej
-przeprowadzono po~20 partii (1000 iteracji MCTS na ruch). Wyniki potwierdzaj\k a
-hipotez\k e o wp\l ywie parametr\'ow gry: kr\'otkie s\l owa i du\.zy alfabet
-faworyzuj\k a Inserter, d\l ugie s\l owa i ma\l y alfabet -- Pointera. Wariant
-UCB1-Tuned okaza\l\ si\k e lekko silniejszy od klasycznego UCT, a heurystyki
-dziedzinowe da\l y znacz\k a popraw\k e w roli Pointera. Najwa\.zniejszym
-i nieoczekiwanym wynikiem jest s\l aba skuteczno\'s\'c MCTS-Solver w roli Insertera:
-mimo teoretycznej poprawno\'sci wariant ten zachowuje si\k e znacz\k aco gorzej ni\.z
-klasyczny UCT nawet w warunkach silnie korzystnych dla Insertera. W raporcie
-przedstawiamy hipotez\k e wyja\'sniaj\k ac\k a t\k e patologi\k e: brak \'swiadomo\'sci
-udowodnionych etykiet w finalnym wyborze ruchu w korzeniu drzewa.
+$|\Sigma|\in\{3,\dots,10\}\times L\in\{5,\dots,40\}$, dla każdej z nich
+przeprowadzono po~20 partii (1000 iteracji MCTS na ruch). Wyniki potwierdzają
+hipotezę o wpływie parametrów gry: krótkie słowa i duży alfabet faworyzują
+Insertera, długie słowa i mały alfabet -- Pointera. Gdy spojrzeć na
+zsumowany odsetek wygranych z obu ról, klasyczny UCT i wariant UCB1-Tuned
+osiągają w naszej grze praktycznie identyczne wyniki ($\approx 50\%$ \mbox{vs}
+$50\%$); spodziewana przewaga UCB1-Tuned nie ujawniła się. Heurystyka
+filtrująca symulację okazała się natomiast najsilniejszą badaną
+modyfikacją -- agregat zwycięstw wynosi $\approx 64\%$ wobec $\approx 36\%$
+dla klasycznego UCT. Wariant MCTS-Solver wbrew oczekiwaniom zachowuje się
+gorzej od klasycznego UCT (sumarycznie $\approx 42\%$ wobec $\approx 58\%$),
+przy czym regresja koncentruje się w roli Insertera. W raporcie omawiamy
+prawdopodobne przyczyny tej regresji oraz sugerujemy ich
+implementacyjne, a nie algorytmiczne, źródło.
 \newpage
 
 % --------------------------------------------------------------------------------------------
-\section{Gra w unikanie ciasnych bli\'zniak\'ow}
+\section{Gra w unikanie ciasnych bliźniaków}
 
-Gra w unikanie ciasnych bli\'zniak\'ow to wymy\'slona, asymetryczna gra turowa
-oparta na klasycznym problemie kombinatoryki s\l\'ow -- unikaniu powt\'orze\'n
-typu \emph{kwadrat}, badanym ju\.z przez Thuego na pocz\k atku XX wieku
-\cite{Thue1906,Lothaire2002}. Z perspektywy teorii gier jest to gra dwuosobowa
-o sumie zerowej, z pe\l n\k a informacj\k a i bez element\'ow losowych: ka\.zdy
-kolejny stan planszy wynika w stu procentach z deterministycznych decyzji
-podj\k etych przez graczy w poprzednich turach. Te w\l asno\'sci czyni\k a gr\k e
-naturalnym poligonem do\'swiadczalnym dla algorytm\'ow MCTS.
+Gra w unikanie ciasnych bliźniaków to wymyślona, asymetryczna gra turowa
+oparta na klasycznym problemie kombinatoryki słów -- unikaniu powtórzeń
+typu \emph{kwadrat}, badanym już przez Thuego na początku XX wieku
+\cite{Thue1906,Lothaire2002}. Z perspektywy teorii gier jest to gra
+dwuosobowa o sumie zerowej, z pełną informacją i bez elementów losowych:
+każdy kolejny stan planszy wynika w stu procentach z deterministycznych
+decyzji podjętych przez graczy w poprzednich turach. Te własności czynią
+grę naturalnym poligonem doświadczalnym dla algorytmów MCTS.
 
 \subsection{Definicje formalne}
-Aby precyzyjnie opisa\'c zasady, definiujemy podstawowe poj\k ecia:
+Aby precyzyjnie opisać zasady, definiujemy podstawowe pojęcia:
 \begin{itemize}
-    \item \textbf{Alfabet ($\Sigma$)} -- z g\'ory ustalony, sko\'nczony zbi\'or
-    znak\'ow (np.~$\Sigma=\{a,b,c\}$).
-    \item \textbf{S\l owo ($w$)} -- ci\k ag znak\'ow zbudowany z liter alfabetu;
-    gra rozpoczyna si\k e od s\l owa pustego~$\epsilon$.
-    \item \textbf{Bli\'zniaki} -- dwa identyczne, roz\l\k aczne podci\k agi w obr\k ebie
-    jednego s\l owa.
-    \item \textbf{Ciasne bli\'zniaki (kwadraty)} -- szczeg\'olny przypadek bli\'zniak\'ow
-    tworz\k acych sp\'ojne pods\l owo postaci $xx$, gdzie $x$ jest dowolnym
-    niepustym ci\k agiem znak\'ow (np.~\textit{aa}, \textit{baba}, \textit{abcabc}).
+    \item \textbf{Alfabet ($\Sigma$)} -- z góry ustalony, skończony zbiór
+    znaków (np.~$\Sigma=\{a,b,c\}$).
+    \item \textbf{Słowo ($w$)} -- ciąg znaków zbudowany z liter alfabetu;
+    gra rozpoczyna się od słowa pustego~$\epsilon$.
+    \item \textbf{Bliźniaki} -- dwa identyczne, rozłączne podciągi w obrębie
+    jednego słowa.
+    \item \textbf{Ciasne bliźniaki (kwadraty)} -- szczególny przypadek
+    bliźniaków tworzących spójne podsłowo postaci $xx$, gdzie $x$ jest
+    dowolnym niepustym ciągiem znaków (np.~\textit{aa}, \textit{baba},
+    \textit{abcabc}).
 \end{itemize}
 
 \subsection{Zasady gry i role graczy}
-Rozgrywka jest parametryzowana przez dwa czynniki: u\.zywany alfabet~$\Sigma$
-oraz maksymaln\k a dozwolon\k a d\l ugo\'s\'c s\l owa~$L$. Gracze wykonuj\k a tury
-naprzemiennie, ich role i dost\k epne akcje s\k a jednak ca\l kowicie asymetryczne.
+Rozgrywka jest parametryzowana przez dwa czynniki: używany alfabet~$\Sigma$
+oraz maksymalną dozwoloną długość słowa~$L$. Gracze wykonują tury
+naprzemiennie, ich role i dostępne akcje są jednak całkowicie asymetryczne.
 
 \begin{itemize}
-    \item \textbf{Gracz~1 (Wskazuj\k acy / Pointer):} W swojej turze analizuje
-    aktualne s\l owo~$w$ o d\l ugo\'sci~$N$ i wskazuje pozycj\k e (indeks od~$0$
-    do~$N$), na kt\'orej ma pojawi\'c si\k e nowa litera. Celem Pointera jest
-    wymuszenie na przeciwniku stworzenia ciasnych bli\'zniak\'ow.
-    \item \textbf{Gracz~2 (Wstawiaj\k acy / Inserter):} W swojej turze wybiera
-    jedn\k a z liter alfabetu~$\Sigma$ i wstawia j\k a na pozycj\k e narzucon\k a przez
-    Pointera. Celem Insertera jest budowanie s\l owa tak, aby unikn\k a\'c
-    ciasnych bli\'zniak\'ow a\.z do osi\k agni\k ecia limitu~$L$.
+    \item \textbf{Gracz~1 (Wskazujący / Pointer):} W swojej turze analizuje
+    aktualne słowo~$w$ o długości~$N$ i wskazuje pozycję (indeks od~$0$
+    do~$N$), na której ma pojawić się nowa litera. Celem Pointera jest
+    wymuszenie na przeciwniku stworzenia ciasnych bliźniaków.
+    \item \textbf{Gracz~2 (Wstawiający / Inserter):} W swojej turze wybiera
+    jedną z liter alfabetu~$\Sigma$ i wstawia ją na pozycję narzuconą przez
+    Pointera. Celem Insertera jest budowanie słowa tak, aby uniknąć
+    ciasnych bliźniaków aż do osiągnięcia limitu~$L$.
 \end{itemize}
 
-Gra ko\'nczy si\k e w jednym z dw\'och przypadk\'ow:
+Gra kończy się w jednym z dwóch przypadków:
 \begin{enumerate}
-    \item W s\l owie pojawiaj\k a si\k e ciasne bli\'zniaki -- zwyci\k estwo Pointera.
-    \item S\l owo osi\k aga d\l ugo\'s\'c~$L$ i nie zawiera ciasnych bli\'zniak\'ow --
-    zwyci\k estwo Insertera.
+    \item W słowie pojawiają się ciasne bliźniaki -- zwycięstwo Pointera.
+    \item Słowo osiąga długość~$L$ i nie zawiera ciasnych bliźniaków --
+    zwycięstwo Insertera.
 \end{enumerate}
-Gra nie przewiduje remis\'ow.
+Gra nie przewiduje remisów.
 
-\subsection{Przyk\l ad rozgrywki}
-Poni\.zej zaprezentowano kr\'otki przyk\l ad partii z alfabetem
-$\Sigma=\{a,b,c\}$ i limitem $L=5$. Pocz\k atkowy stan to s\l owo puste,
+\subsection{Przykład rozgrywki}
+Poniżej zaprezentowano krótki przykład partii z alfabetem
+$\Sigma=\{a,b,c\}$ i limitem $L=5$. Początkowy stan to słowo puste,
 kursor wstawiania oznaczono symbolem~$|$.
 
 \begin{enumerate}
-    \item \textbf{Tura~1:} Pointer wskazuje jedyn\k a dost\k epn\k a pozycj\k e (indeks~0).
-    Inserter wstawia liter\k e~\textit{a}. Aktualne s\l owo: \textbf{a}.
-    \item \textbf{Tura~2:} Pointer wskazuje pozycj\k e na ko\'ncu (indeks~1: $a|$).
-    Inserter wstawia liter\k e~\textit{b}. Aktualne s\l owo: \textbf{ab}.
-    \item \textbf{Tura~3:} Pointer wskazuje pozycj\k e w \'srodku (indeks~1, mi\k edzy
-    \textit{a} i \textit{b}: $a|b$). Inserter wstawia liter\k e~\textit{c}.
-    Aktualne s\l owo: \textbf{acb}.
-    \item \textbf{Tura~4:} Pointer wskazuje pozycj\k e na samym ko\'ncu (indeks~3:
-    $acb|$). Inserter decyduje si\k e wstawi\'c liter\k e~\textit{b}. Aktualne s\l owo:
-    \textbf{acbb}.
+    \item \textbf{Tura~1:} Pointer wskazuje jedyną dostępną pozycję
+    (indeks~0). Inserter wstawia literę~\textit{a}. Aktualne słowo:
+    \textbf{a}.
+    \item \textbf{Tura~2:} Pointer wskazuje pozycję na końcu (indeks~1:
+    $a|$). Inserter wstawia literę~\textit{b}. Aktualne słowo: \textbf{ab}.
+    \item \textbf{Tura~3:} Pointer wskazuje pozycję w środku (indeks~1,
+    między \textit{a} i \textit{b}: $a|b$). Inserter wstawia
+    literę~\textit{c}. Aktualne słowo: \textbf{acb}.
+    \item \textbf{Tura~4:} Pointer wskazuje pozycję na samym końcu (indeks~3:
+    $acb|$). Inserter decyduje się wstawić literę~\textit{b}. Aktualne
+    słowo: \textbf{acbb}.
 \end{enumerate}
 
-Po czwartej turze system weryfikuj\k acy stan gry wykrywa, \.ze na ko\'ncu s\l owa
-powsta\l y ciasne bli\'zniaki (pods\l owo \textit{bb}). Gra ko\'nczy si\k e
-natychmiastowym zwyci\k estwem Pointera, przed osi\k agni\k eciem limitu znak\'ow~$L$.
-Z\l a decyzja Insertera w czwartej turze (wstawienie \textit{b} zamiast \textit{a}
-lub \textit{c}) doprowadzi\l a do jego pora\.zki.
+Po czwartej turze system weryfikujący stan gry wykrywa, że na końcu słowa
+powstały ciasne bliźniaki (podsłowo \textit{bb}). Gra kończy się
+natychmiastowym zwycięstwem Pointera, przed osiągnięciem limitu znaków~$L$.
+Zła decyzja Insertera w czwartej turze (wstawienie \textit{b} zamiast
+\textit{a} lub \textit{c}) doprowadziła do jego porażki.
 
-\subsection{Algorytm detekcji ciasnych bli\'zniak\'ow}
+\subsection{Algorytm detekcji ciasnych bliźniaków}
 
-Kluczowym sk\l adnikiem silnika gry jest algorytm wykrywaj\k acy wyst\k apienie
-ciasnych bli\'zniak\'ow. Og\'olny problem wyszukiwania powt\'orze\'n w s\l owie jest
-rozstrzygalny w czasie wielomianowym; istniej\k a algorytmy o z\l o\.zono\'sci
-$\mathcal{O}(n\log n)$ wykorzystuj\k ace zaawansowane struktury danych
-\cite{Lothaire2002}. Poniewa\.z w naszej grze maksymalna d\l ugo\'s\'c s\l owa
-nie przekracza kilkudziesi\k eciu liter, narzut sta\l ej zwi\k azany z budow\k a
-takich struktur danych przewy\.zsza ich asymptotyczne korzy\'sci.
+Kluczowym składnikiem silnika gry jest algorytm wykrywający wystąpienie
+ciasnych bliźniaków. Ogólny problem wyszukiwania powtórzeń w słowie jest
+rozstrzygalny w czasie wielomianowym; istnieją algorytmy o złożoności
+$\mathcal{O}(n\log n)$ wykorzystujące zaawansowane struktury danych
+\cite{Lothaire2002}. Ponieważ w naszej grze maksymalna długość słowa nie
+przekracza kilkudziesięciu liter, narzut stałej związany z budową takich
+struktur danych przewyższa ich asymptotyczne korzyści.
 
-Zaimplementowano zoptymalizowany algorytm typu \textit{brute-force} z lokaln\k a
-detekcj\k a, opisany w pseudokodzie poni\.zej. Wykorzystuje on dwa spostrze\.zenia:
+Zaimplementowano zoptymalizowany algorytm typu \textit{brute-force}
+z lokalną detekcją, opisany w pseudokodzie poniżej. Wykorzystuje on dwa
+spostrzeżenia:
 \begin{enumerate}
-    \item D\l ugo\'s\'c pojedynczego bli\'zniaka jest co najwy\.zej po\l ow\k a d\l ugo\'sci
-    s\l owa.
-    \item Po wstawieniu pojedynczej litery nowe ciasne bli\'zniaki mog\k a powsta\'c
-    wy\l\k acznie w okienkach zahaczaj\k acych o wstawiony znak. Wystarczy zatem
-    sprawdzi\'c $\mathcal{O}(n)$ takich okienek zamiast $\mathcal{O}(n^2)$.
+    \item długość pojedynczego bliźniaka jest co najwyżej połową długości
+    słowa,
+    \item po wstawieniu pojedynczej litery nowe ciasne bliźniaki mogą
+    powstać wyłącznie w okienkach zahaczających o wstawiony znak.
+    Wystarczy zatem sprawdzić $\mathcal{O}(n)$ takich okienek zamiast
+    $\mathcal{O}(n^2)$.
 \end{enumerate}
 
 \begin{algorithm}[H]
-\caption{Lokalna detekcja ciasnych bli\'zniak\'ow}
+\caption{Lokalna detekcja ciasnych bliźniaków}
 \begin{algorithmic}[1]
 \Function{CzyPowstalBlizniak}{$slowo, indeks\_nowego\_znaku$}
-    \State $N \gets \text{d\l ugo\'s\'c}(slowo)$
+    \State $N \gets \text{długość}(slowo)$
     \For{$L \gets 1$ \textbf{to} $\lfloor N / 2 \rfloor$}
         \State $dlugosc\_blizniaka \gets 2 \times L$
         \State $start\_min \gets \max(0, indeks\_nowego\_znaku - dlugosc\_blizniaka + 1)$
@@ -197,7 +204,7 @@ detekcj\k a, opisany w pseudokodzie poni\.zej. Wykorzystuje on dwa spostrze\.zen
             \EndIf
         \EndFor
     \EndFor
-    \State \Return \textbf{Fa\l sz}
+    \State \Return \textbf{Fałsz}
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
@@ -207,325 +214,325 @@ detekcj\k a, opisany w pseudokodzie poni\.zej. Wykorzystuje on dwa spostrze\.zen
 
 \subsection{Historia}
 
-Algorytmy z rodziny Monte Carlo Tree Search (MCTS) s\k a obecnie jednym
-z najwa\.zniejszych paradygmat\'ow w sztucznej inteligencji dla gier o du\.zej
-z\l o\.zono\'sci stan\'ow. Termin \emph{Monte Carlo Tree Search} po raz pierwszy
-zosta\l\ wprowadzony w pracy Couloma w 2006 roku, kt\'ory zastosowa\l\ go
-do programu graj\k acego w Go~\cite{Coulom2006}. W tym samym roku Kocsis
-i Szepesv\'ari opublikowali kluczow\k a prac\k e wprowadzaj\k ac\k a algorytm UCT,
-stanowi\k acy fundament wsp\'o\l czesnych implementacji MCTS~\cite{Kocsis2006}.
+Algorytmy z rodziny Monte Carlo Tree Search (MCTS) są obecnie jednym
+z najważniejszych paradygmatów w sztucznej inteligencji dla gier o dużej
+złożoności stanów. Termin \emph{Monte Carlo Tree Search} po raz pierwszy
+został wprowadzony w pracy Couloma w 2006 roku, który zastosował go do
+programu grającego w Go~\cite{Coulom2006}. W tym samym roku Kocsis
+i Szepesvári opublikowali kluczową pracę wprowadzającą algorytm UCT,
+stanowiący fundament współczesnych implementacji MCTS~\cite{Kocsis2006}.
 
-Prze\l om nast\k api\l\ w 2016 roku, gdy program AlphaGo firmy DeepMind pokona\l\
-mistrza \'swiata w Go, Lee Sedola. Sukces ten by\l\ wynikiem po\l\k aczenia
-przeszukiwania drzewa MCTS z g\l\k ebokimi sieciami neuronowymi do oceny
-stan\'ow~\cite{Silver2016}. Od tego momentu MCTS stanowi z\l oty standard
-w grach z pe\l n\k a informacj\k a.
+Przełom nastąpił w 2016 roku, gdy program AlphaGo firmy DeepMind pokonał
+mistrza świata w Go, Lee Sedola. Sukces ten był wynikiem połączenia
+przeszukiwania drzewa MCTS z głębokimi sieciami neuronowymi do oceny
+stanów~\cite{Silver2016}. Od tego momentu MCTS stanowi złoty standard
+w grach z pełną informacją.
 
 \subsection{Architektura i fazy algorytmu MCTS}
 
-Jak wskazuje obszerny przegl\k ad metod MCTS Browne i in.~\cite{Browne2012},
-si\l a tego algorytmu opiera si\k e na budowaniu asymetrycznego drzewa
-przeszukiwa\'n poprzez wielokrotne powtarzanie czterofazowej p\k etli.
-Pozwala to skupi\'c zasoby obliczeniowe na najbardziej obiecuj\k acych
-ga\l\k eziach drzewa.
+Jak wskazuje obszerny przegląd metod MCTS Browne i in.~\cite{Browne2012},
+siła tego algorytmu opiera się na budowaniu asymetrycznego drzewa
+przeszukiwań poprzez wielokrotne powtarzanie czterofazowej pętli.
+Pozwala to skupić zasoby obliczeniowe na najbardziej obiecujących
+gałęziach drzewa.
 
 W trakcie przebiegu gry ustalona liczba iteracji jest wykonywana przed
-ka\.zdym ruchem algorytmu. Algorytm buduje drzewo podczas ca\l ej rozgrywki;
-ka\.zda iteracja sk\l ada si\k e z czterech krok\'ow:
+każdym ruchem algorytmu. Algorytm buduje drzewo podczas całej rozgrywki;
+każda iteracja składa się z czterech kroków:
 
 \begin{enumerate}
     \item \textbf{Selekcja} -- algorytm rozpoczyna od korzenia drzewa
-    (aktualnego stanu gry) i rekurencyjnie wybiera w\k ez\l y potomne
-    a\.z do dotarcia do w\k ez\l a, kt\'ory nie zosta\l\ w pe\l ni wyekspandowany.
-    \item \textbf{Ekspansja} -- po dotarciu do w\k ez\l a rozszerzalnego, do drzewa
-    dodawany jest jeden nowy w\k eze\l\ potomny, reprezentuj\k acy kolejny,
+    (aktualnego stanu gry) i rekurencyjnie wybiera węzły potomne aż do
+    dotarcia do węzła, który nie został w pełni wyekspandowany.
+    \item \textbf{Ekspansja} -- po dotarciu do węzła rozszerzalnego, do
+    drzewa dodawany jest jeden nowy węzeł potomny, reprezentujący kolejny,
     niezbadany jeszcze legalny ruch z danego stanu.
-    \item \textbf{Symulacja} -- z nowo utworzonego w\k ez\l a przeprowadzana jest
-    szybka symulacja rozgrywki a\.z do osi\k agni\k ecia stanu ko\'ncowego.
+    \item \textbf{Symulacja} -- z nowo utworzonego węzła przeprowadzana jest
+    szybka symulacja rozgrywki aż do osiągnięcia stanu końcowego.
     \item \textbf{Propagacja wsteczna} -- wynik symulacji jest propagowany
-    w g\'or\k e \'scie\.zki, a\.z do korzenia. W ka\.zdym odwiedzonym w\k e\'zle
-    aktualizowane s\k a statystyki: liczba odwiedzin oraz liczba zwyci\k estw.
+    w górę ścieżki, aż do korzenia. W każdym odwiedzonym węźle aktualizowane
+    są statystyki: liczba odwiedzin oraz liczba zwycięstw.
 \end{enumerate}
 
-\subsection{Adaptacja MCTS do gry w ciasnych bli\'zniak\'ow}
+\subsection{Adaptacja MCTS do gry w ciasnych bliźniaków}
 
-\'Srodowisko gry spe\l nia za\l o\.zenia gry dwuosobowej z pe\l n\k a informacj\k a
-o sumie zerowej, jednak jego asymetryczny charakter (r\'o\.zne akcje
+Środowisko gry spełnia założenia gry dwuosobowej z pełną informacją
+o sumie zerowej, jednak jego asymetryczny charakter (różne akcje
 w turach Pointera i Insertera) wymaga drobnej adaptacji algorytmu:
 
 \begin{itemize}
-    \item \textbf{W\k ez\l y drzewa} reprezentuj\k a stany gry. Ka\.zdy poziom drzewa
-    na przemian opisuje stan po wskazaniu indeksu przez Pointera oraz stan po
-    wstawieniu litery przez Insertera.
-    \item \textbf{Selekcja i propagacja} -- gracze realizuj\k a przeciwstawne
-    cele, dlatego wynik propagowany w fazie backpropagacji jest interpretowany
-    z perspektywy gracza wykonuj\k acego ruch w danym w\k e\'zle. Identycznie wzory
-    selekcji (UCT, UCB1-Tuned) s\k a obliczane z punktu widzenia aktualnego
-    movera.
-    \item \textbf{Ekspansja} -- ze wzgl\k edu na szybki przyrost liczby
-    dozwolonych ruch\'ow (wzrost d\l ugo\'sci s\l owa zwi\k eksza liczb\k e dost\k epnych
-    indeks\'ow dla Pointera), MCTS dodaje jedynie po jednym nowym wariancie
-    ruchu na iteracj\k e.
-    \item \textbf{Symulacja} -- domy\'slna faza rozgrywki polega na losowym
-    przeplataniu wyboru indeks\'ow i wstawiania liter, dop\'oki algorytm
-    detekcji bli\'zniak\'ow nie zaraportuje ich obecno\'sci albo s\l owo nie
-    osi\k agnie maksymalnej d\l ugo\'sci.
+    \item \textbf{Węzły drzewa} reprezentują stany gry. Każdy poziom drzewa
+    na przemian opisuje stan po wskazaniu indeksu przez Pointera oraz stan
+    po wstawieniu litery przez Insertera.
+    \item \textbf{Selekcja i propagacja} -- gracze realizują przeciwstawne
+    cele, dlatego wynik propagowany w fazie backpropagacji jest
+    interpretowany z perspektywy gracza wykonującego ruch w danym węźle.
+    Identycznie wzory selekcji (UCT, UCB1-Tuned) są obliczane z punktu
+    widzenia aktualnego movera.
+    \item \textbf{Ekspansja} -- ze względu na szybki przyrost liczby
+    dozwolonych ruchów (wzrost długości słowa zwiększa liczbę dostępnych
+    indeksów dla Pointera), MCTS dodaje jedynie po jednym nowym wariancie
+    ruchu na iterację.
+    \item \textbf{Symulacja} -- domyślna faza rozgrywki polega na losowym
+    przeplataniu wyboru indeksów i wstawiania liter, dopóki algorytm
+    detekcji bliźniaków nie zaraportuje ich obecności albo słowo nie
+    osiągnie maksymalnej długości.
 \end{itemize}
 
 % --------------------------------------------------------------------------------------------
 \section{Algorytm UCT (Upper Confidence Bound applied to Trees)}
 
 \subsection{Dylemat eksploracji i eksploatacji}
-G\l\'ownym wyzwaniem w fazie selekcji jest tzw. dylemat eksploracji
-i eksploatacji. Algorytm musi decydowa\'c, czy pod\k a\.za\'c \'scie\.zkami,
-kt\'ore do tej pory przynosi\l y najlepsze rezultaty (eksploatacja), czy te\.z
-bada\'c w\k ez\l y rzadko odwiedzane, kt\'ore mog\k a ukrywa\'c jeszcze lepsze
-rozwi\k azania (eksploracja). Rozwi\k azaniem tego problemu jest metoda
-\textbf{UCT}, wprowadzona przez Kocsisa i Szepesv\'ariego~\cite{Kocsis2006},
-adaptuj\k aca strategi\k e UCB1 z problem\'ow wielor\k ekich bandyt\'ow do drzew
-decyzyjnych.
+Głównym wyzwaniem w fazie selekcji jest tzw. dylemat eksploracji
+i eksploatacji. Algorytm musi decydować, czy podążać ścieżkami, które do
+tej pory przynosiły najlepsze rezultaty (eksploatacja), czy też badać
+węzły rzadko odwiedzane, które mogą ukrywać jeszcze lepsze rozwiązania
+(eksploracja). Rozwiązaniem tego problemu jest metoda \textbf{UCT},
+wprowadzona przez Kocsisa i Szepesváriego~\cite{Kocsis2006}, adaptująca
+strategię UCB1 z problemów wielorękich bandytów do drzew decyzyjnych.
 
-\subsection{Formu\l a matematyczna}
-W trakcie selekcji, dla ka\.zdego w pe\l ni wyekspandowanego w\k ez\l a, algorytm
-oblicza warto\'s\'c UCT dla wszystkich jego dzieci i wybiera to, kt\'ore
+\subsection{Formuła matematyczna}
+W trakcie selekcji, dla każdego w pełni wyekspandowanego węzła, algorytm
+oblicza wartość UCT dla wszystkich jego dzieci i wybiera to, które
 maksymalizuje:
 
 \begin{equation}
 UCT_i = \bar{X}_i + C \sqrt{\frac{\ln N}{N_i}}
 \end{equation}
 
-gdzie $\bar{X}_i = W_i/N_i$ to \textbf{eksploatacja} (\'sredni odsetek wygranych
-w\k ez\l a~$i$), $N_i$ -- liczba odwiedzin w\k ez\l a~$i$, $N$ -- liczba odwiedzin
-rodzica, a $C$ -- sta\l a eksploracji (zwykle $\sqrt{2}$). W ramach naszego
-projektu warto\'s\'c $\bar{X}_i$ jest zawsze obliczana z perspektywy gracza
-aktualnie wykonuj\k acego ruch w danym w\k e\'zle, zgodnie z konwencj\k a gier
-o sumie zerowej.
+gdzie $\bar{X}_i = W_i/N_i$ to \textbf{eksploatacja} (średni odsetek
+wygranych węzła~$i$), $N_i$ -- liczba odwiedzin węzła~$i$, $N$ -- liczba
+odwiedzin rodzica, a $C$ -- stała eksploracji (zwykle $\sqrt{2}$).
+W ramach naszego projektu wartość $\bar{X}_i$ jest zawsze obliczana
+z perspektywy gracza aktualnie wykonującego ruch w danym węźle, zgodnie
+z konwencją gier o sumie zerowej.
 
 % --------------------------------------------------------------------------------------------
 \section{Zaimplementowane modyfikacje algorytmu}
 
-W projekcie zaimplementowano dwie modyfikacje fazy obliczania wagi w\k ez\l a
-oraz dwie heurystyki dziedzinowe. Wszystkie warianty s\k a wymienne -- ka\.zdy
-gracz mo\.ze nie\-zale\.znie zestawi\'c sw\'oj algorytm z dowolnej kombinacji
+W projekcie zaimplementowano dwie modyfikacje fazy obliczania wagi węzła
+oraz dwie heurystyki dziedzinowe. Wszystkie warianty są wymienne -- każdy
+gracz może niezależnie zestawić swój algorytm z dowolnej kombinacji
 strategii selekcji, symulacji i propagacji wstecznej.
 
-\subsection{MCTS-Solver (propagacja udowodnionych w\k ez\l\'ow)}
+\subsection{MCTS-Solver (propagacja udowodnionych węzłów)}
 Algorytm \emph{Monte-Carlo Tree Search Solver}~\cite{Winands2008} jest
-modyfikacj\k a klasycznego MCTS, szczeg\'olnie u\.zyteczn\k a w grach typu
-\emph{nag\l a \'smier\'c} (\textit{sudden-death}), do kt\'orych nale\.zy gra
-w unikanie ciasnych bli\'zniak\'ow. Standardowy MCTS nie potrafi rozpozna\'c
-zagwarantowanych w\k ez\l\'ow ko\'ncowych na etapie selekcji, poniewa\.z opiera
-si\k e wy\l\k acznie na warto\'sciach u\'srednionych. MCTS-Solver rozwi\k azuje
-ten problem dodaj\k ac do w\k ez\l\'ow flag\k e \emph{stanu udowodnionego}.
+modyfikacją klasycznego MCTS, szczególnie użyteczną w grach typu
+\emph{nagła śmierć} (\textit{sudden-death}), do których należy gra
+w unikanie ciasnych bliźniaków. Standardowy MCTS nie potrafi rozpoznać
+zagwarantowanych węzłów końcowych na etapie selekcji, ponieważ opiera
+się wyłącznie na wartościach uśrednionych. MCTS-Solver rozwiązuje ten
+problem, dodając do węzłów flagę \emph{stanu udowodnionego}.
 
-Logika propagacji jest nast\k epuj\k aca:
+Logika propagacji jest następująca:
 \begin{itemize}
-    \item Je\.zeli ruch prowadzi do terminalnego stanu, w\k eze\l\ jest
-    natychmiast oznaczany odpowiednim statusem (proven win lub proven loss
-    z perspektywy mover-a).
-    \item Je\.zeli wszystkie dzieci w\k ez\l a maj\k a status proven loss z perspektywy
-    mover-a, w\k eze\l\ rodzica otrzymuje status proven loss.
-    \item Je\.zeli cho\'c jedno dziecko ma status proven win z perspektywy
-    mover-a, rodzic otrzymuje status proven win.
+    \item Jeżeli ruch prowadzi do terminalnego stanu, węzeł jest natychmiast
+    oznaczany odpowiednim statusem (proven win lub proven loss z perspektywy
+    movera).
+    \item Jeżeli wszystkie dzieci węzła mają status proven loss z perspektywy
+    movera, węzeł rodzica otrzymuje status proven loss.
+    \item Jeżeli choć jedno dziecko ma status proven win z perspektywy
+    movera, rodzic otrzymuje status proven win.
 \end{itemize}
 
-W zaimplementowanym wariancie, gdy w fazie selekcji jakie\'s dziecko ma status
-proven win dla aktualnego mover-a, jest wybierane deterministycznie
-(omijaj\k ac formu\l\k e UCT).
+W zaimplementowanym wariancie, gdy w fazie selekcji jakieś dziecko ma
+status proven win dla aktualnego movera, jest wybierane deterministycznie
+(omijając formułę UCT).
 
 \subsection{UCB1-Tuned}
-Klasyczna formu\l a UCB1 uzale\.znia czynnik eksploracji wy\l\k acznie od liczby
-odwiedzin danego w\k ez\l a, ignoruj\k ac stabilno\'s\'c jego dotychczasowych
-wynik\'ow. Heurystyka \textbf{UCB1-Tuned}~\cite{Auer2002} rozszerza oryginalny
-wz\'or o szacowan\k a wariancj\k e wynik\'ow z przeprowadzonych symulacji.
+Klasyczna formuła UCB1 uzależnia czynnik eksploracji wyłącznie od liczby
+odwiedzin danego węzła, ignorując stabilność jego dotychczasowych wyników.
+Heurystyka \textbf{UCB1-Tuned}~\cite{Auer2002} rozszerza oryginalny wzór
+o szacowaną wariancję wyników z przeprowadzonych symulacji.
 
-W naszej grze, z uwagi na brak remis\'ow, ka\.zda symulacja przyjmuje warto\'s\'c
-binarn\k a (sukces lub pora\.zka), co odpowiada rozk\l adowi Bernoulliego.
-Wariancja takiego rozk\l adu wynosi $V=p(1-p)$, gdzie $p$ to empiryczny odsetek
-wygranych z danego w\k ez\l a. Wprowadzenie elementu $p(1-p)$ sprawia,
-\.ze MCTS dynamicznie redukuje poziom eksploracji dla w\k ez\l\'ow o pewnym wyniku
-($p\approx 0$ lub $p\approx 1$, gdzie wariancja d\k a\.zy do zera) oraz
-przekierowuje moc obliczeniow\k a na dog\l\k ebne badanie w\k ez\l\'ow niestabilnych
-($p\approx 0{,}5$, gdzie wariancja osi\k aga maksimum).
+W naszej grze, z uwagi na brak remisów, każda symulacja przyjmuje wartość
+binarną (sukces lub porażka), co odpowiada rozkładowi Bernoulliego.
+Wariancja takiego rozkładu wynosi $V=p(1-p)$, gdzie $p$ to empiryczny
+odsetek wygranych z danego węzła. Wprowadzenie elementu $p(1-p)$ sprawia,
+że MCTS dynamicznie redukuje poziom eksploracji dla węzłów o pewnym
+wyniku ($p\approx 0$ lub $p\approx 1$, gdzie wariancja dąży do zera) oraz
+przekierowuje moc obliczeniową na dogłębne badanie węzłów niestabilnych
+($p\approx 0{,}5$, gdzie wariancja osiąga maksimum).
 
-Ca\l kowita waga w\k ez\l a~$i$ w UCB1-Tuned wynosi:
+Całkowita waga węzła~$i$ w UCB1-Tuned wynosi:
 \begin{equation}
     Score_i = \bar{X}_i + \sqrt{\frac{\ln N}{n_i} \min\left(\frac{1}{4}, V_i(N)\right)}
 \end{equation}
-gdzie g\'orna granica oszacowanej wariancji jest dana wzorem:
+gdzie górna granica oszacowanej wariancji jest dana wzorem:
 \begin{equation}
     V_i(N) = \hat{\sigma}_i^2 + \sqrt{\frac{2 \ln N}{n_i}}
 \end{equation}
-($\hat{\sigma}_i^2$ -- wariancja empiryczna, drugi sk\l adnik koryguje skutek
-ma\l ej liczby odwiedzin).
+($\hat{\sigma}_i^2$ -- wariancja empiryczna, drugi składnik koryguje
+skutek małej liczby odwiedzin).
 
 \subsection{Heurystyka w fazie symulacji}
-Najprostszym sposobem na implementacj\k e wiedzy dziedzinowej s\k a tzw.
-\emph{symulacje wzbogacone}~\cite{Chaslot2008}, w kt\'orych zast\k epuje si\k e
-ca\l kowicie losowe rollouty filtrami deterministycznymi. W naszej
-implementacji symulacja heurystyczna stosuje regu\l y:
+Najprostszym sposobem na implementację wiedzy dziedzinowej są tzw.
+\emph{symulacje wzbogacone}~\cite{Chaslot2008}, w których zastępuje się
+całkowicie losowe rollouty filtrami deterministycznymi. W naszej
+implementacji symulacja heurystyczna stosuje reguły:
 \begin{itemize}
-    \item \textbf{Inserter}: zamiast wybiera\'c liter\k e w pe\l ni losowo,
-    skrypt symulacyjny odrzuca litery, kt\'ore natychmiast tworz\k a ciasnego
-    bli\'zniaka. Je\.zeli ka\.zda litera prowadzi do bli\'zniaka, gracz jest
-    zmuszony do ruchu przegrywaj\k acego.
-    \item \textbf{Pointer}: je\.zeli istnieje pozycja, w kt\'orej Inserter --
-    niezale\.znie od wybranej litery -- musi utworzy\'c bli\'zniaka, Pointer
-    deterministycznie wybiera t\k e pozycj\k e.
+    \item \textbf{Inserter}: zamiast wybierać literę w pełni losowo,
+    skrypt symulacyjny odrzuca litery, które natychmiast tworzą ciasnego
+    bliźniaka. Jeżeli każda litera prowadzi do bliźniaka, gracz jest
+    zmuszony do ruchu przegrywającego.
+    \item \textbf{Pointer}: jeżeli istnieje pozycja, w której Inserter --
+    niezależnie od wybranej litery -- musi utworzyć bliźniaka, Pointer
+    deterministycznie wybiera tę pozycję.
 \end{itemize}
 
 \subsection{Progressive Bias}
-Drugim miejscem na wdro\.zenie heurystyki jest faza selekcji, poprzez metod\k e
+Drugim miejscem na wdrożenie heurystyki jest faza selekcji, poprzez metodę
 \emph{Progressive Bias}~\cite{Chaslot2008}. Polega ona na dodaniu do wagi
-w\k ez\l a sk\l adnika wynikaj\k acego z heurystycznej oceny ruchu:
+węzła składnika wynikającego z heurystycznej oceny ruchu:
 \begin{equation}
     Score'_i = Score_i + \frac{w \cdot H(i)}{n_i + 1}
 \end{equation}
-gdzie $w$ to waga heurystyki, $H(i)$ -- jej warto\'s\'c, a dzielenie przez
-$n_i + 1$ sprawia, \.ze wp\l yw heurystyki maleje wraz z liczb\k a odwiedzin.
+gdzie $w$ to waga heurystyki, $H(i)$ -- jej wartość, a dzielenie przez
+$n_i + 1$ sprawia, że wpływ heurystyki maleje wraz z liczbą odwiedzin.
 
 W naszej implementacji $H$ definiuje:
 \begin{itemize}
-    \item dla Insertera: bezpiecze\'nstwo litery, mierzone jako $1$ minus jej
-    cz\k esto\'s\'c wyst\k epowania w okolicy kursora,
-    \item dla Pointera: niebezpiecze\'nstwo wskazywanej pozycji, mierzone jako
-    udzia\l\ liter alfabetu, kt\'orych wstawienie utworzy bli\'zniaka.
+    \item dla Insertera: bezpieczeństwo litery, mierzone jako $1$ minus
+    jej częstość występowania w okolicy kursora,
+    \item dla Pointera: niebezpieczeństwo wskazywanej pozycji, mierzone
+    jako udział liter alfabetu, których wstawienie utworzy bliźniaka.
 \end{itemize}
 Progressive Bias jest zaimplementowany jako dekorator dowolnej strategii
-selekcji, dzi\k eki czemu mo\.zna go \l\k aczy\'c zar\'owno z UCT, jak i UCB1-Tuned.
+selekcji, dzięki czemu można go łączyć zarówno z UCT, jak i UCB1-Tuned.
 
 % --------------------------------------------------------------------------------------------
 \section{Implementacja}
 
-Projekt zosta\l\ napisany w j\k ezyku \textbf{Python~3.10+} z naciskiem
-na modu\l ow\k a, kompozycyjn\k a architektur\k e. Algorytm MCTS rozbito na trzy
-niezale\.zne strategie -- selekcj\k e, symulacj\k e i propagacj\k e wsteczn\k a --
-zgodnie ze wzorcem projektowym \emph{Strategy}. Dzi\k eki temu ka\.zdy gracz AI
-mo\.ze by\'c skonfigurowany jako dowolna kombinacja tych element\'ow, a dodanie
-nowego wariantu wymaga jedynie napisania nowej klasy implementuj\k acej
+Projekt został napisany w języku \textbf{Python~3.10+} z naciskiem na
+modułową, kompozycyjną architekturę. Algorytm MCTS rozbito na trzy
+niezależne strategie -- selekcję, symulację i propagację wsteczną --
+zgodnie ze wzorcem projektowym \emph{Strategy}. Dzięki temu każdy gracz AI
+może być skonfigurowany jako dowolna kombinacja tych elementów, a dodanie
+nowego wariantu wymaga jedynie napisania nowej klasy implementującej
 odpowiedni interfejs (np.\ \texttt{SelectionStrategy}).
 
-Najwa\.zniejsze elementy infrastruktury projektu:
+Najważniejsze elementy infrastruktury projektu:
 \begin{itemize}
-    \item silnik gry oddzielony od logiki AI (modu\l\ \texttt{src.engine}),
-    \item w\k ez\l y i orkiestrator MCTS (\texttt{src.mcts}) dzia\l aj\k ace na
+    \item silnik gry oddzielony od logiki AI (moduł \texttt{src.engine}),
+    \item węzły i orkiestrator MCTS (\texttt{src.mcts}) działające na
     abstrakcyjnym interfejsie silnika gry,
-    \item interfejs graficzny w \textbf{PyQt6} (\texttt{src.ui}) udost\k epniaj\k acy
-    tryby Cz\l owiek--AI oraz AI--AI z mo\.zliwo\'sci\k a obserwacji rozgrywki,
-    \item bezg\l owy (\textit{headless}) runner eksperyment\'ow konfigurowany
-    plikami \textbf{YAML} (\texttt{src.run\_match}). Pojedynczy plik konfiguracji
-    mo\.ze definiowa\'c wiele mecz\'ow, kt\'orych wyniki s\k a zapisywane do plik\'ow
-    CSV i nast\k epnie agregowane.
+    \item interfejs graficzny w \textbf{PyQt6} (\texttt{src.ui})
+    udostępniający tryby Człowiek--AI oraz AI--AI z możliwością obserwacji
+    rozgrywki, a także wyboru poziomu trudności (regulowanego liczbą
+    iteracji MCTS na ruch),
+    \item bezgłowy (\textit{headless}) runner eksperymentów konfigurowany
+    plikami \textbf{YAML} (\texttt{src.run\_match}). Pojedynczy plik
+    konfiguracji może definiować wiele meczów, których wyniki są zapisywane
+    do plików CSV i następnie agregowane.
 \end{itemize}
 
-Wykorzystane biblioteki ograniczono do niezb\k ednego minimum: \texttt{numpy}
-(generowanie ziaren losowo\'sci), \texttt{PyQt6} (GUI), \texttt{pyyaml}
-(wczytywanie plik\'ow konfiguracyjnych) oraz \texttt{tqdm} (pasek post\k epu
-podczas d\l u\.zszych serii eksperyment\'ow). Wykresy heatmap zaprezentowane
-w niniejszym raporcie wygenerowano w skryptach pomocniczych z u\.zyciem
+Wykorzystane biblioteki ograniczono do niezbędnego minimum: \texttt{numpy}
+(generowanie ziaren losowości), \texttt{PyQt6} (GUI), \texttt{pyyaml}
+(wczytywanie plików konfiguracyjnych) oraz \texttt{tqdm} (pasek postępu
+podczas dłuższych serii eksperymentów). Wykresy heatmap zaprezentowane
+w niniejszym raporcie wygenerowano w skryptach pomocniczych z użyciem
 \texttt{pandas}, \texttt{matplotlib} i \texttt{seaborn}.
 
-Wa\.znym szczeg\'o\l em konwencji rozgrywki w runnerze eksperyment\'ow jest fakt,
-\.ze pierwszy ruch Pointera (przy s\l owie pustym jest tylko jedna mo\.zliwa
-pozycja: indeks~0) jest wymuszony. Decyzja ta usuwa trywialny ,,wyb\'or'',
-kt\'ory nie nios\l by \.zadnej informacji algorytmicznej, i ujednolica
-warunki por\'ownania mi\k edzy wariantami algorytmu.
+Ważnym szczegółem konwencji rozgrywki w runnerze eksperymentów jest fakt,
+że pierwszy ruch Pointera (przy słowie pustym jest tylko jedna możliwa
+pozycja: indeks~0) jest wymuszony. Decyzja ta usuwa trywialny ,,wybór'',
+który nie niósłby żadnej informacji algorytmicznej, i ujednolica warunki
+porównania między wariantami algorytmu.
 
 % --------------------------------------------------------------------------------------------
 \section{Hipotezy badawcze}
 
-W ramach bada\'n por\'ownywano skuteczno\'s\'c wariant\'ow MCTS oraz w\l asno\'sci
-samej gry. Hipotezy postawione przed prac\k a eksperymentaln\k a zachowano
+W ramach badań porównywano skuteczność wariantów MCTS oraz własności samej
+gry. Hipotezy postawione przed pracą eksperymentalną zachowano
 w niezmienionej formie:
 
 \subsection*{Hipoteza H1}
-\paragraph{H1:} Wariant UCB1-Tuned osi\k agnie wy\.zszy odsetek wygranych
+\paragraph{H1:} Wariant UCB1-Tuned osiągnie wyższy odsetek wygranych
 w grze przeciwko klasycznemu wariantowi UCT.
 
 \subsection*{Hipoteza H2A}
-\paragraph{H2A:} Wariant MCTS-Solver osi\k agnie wy\.zszy odsetek wygranych
+\paragraph{H2A:} Wariant MCTS-Solver osiągnie wyższy odsetek wygranych
 w grze przeciwko klasycznemu wariantowi UCT.
 
 \subsection*{Hipoteza H2B}
-\paragraph{H2B:} Wariant MCTS-Solver nie wyka\.ze znacz\k acej przewagi nad
-klasycznym UCT przy niskiej liczbie iteracji i du\.zym rozmiarze drzewa.
+\paragraph{H2B:} Wariant MCTS-Solver nie wykaże znaczącej przewagi nad
+klasycznym UCT przy niskiej liczbie iteracji i dużym rozmiarze drzewa.
 
 \subsection*{Hipoteza H3}
-\paragraph{H3:} Zastosowanie heurystyk poprawi skuteczno\'s\'c algorytmu.
+\paragraph{H3:} Zastosowanie heurystyk poprawi skuteczność algorytmu.
 
 \subsection*{Hipoteza H4}
-\paragraph{H4:} Balans szans na zwyci\k estwo graczy zale\.zy od d\l ugo\'sci
-s\l owa i rozmiaru alfabetu. Inserter ma tym wi\k eksze szanse, im wi\k ekszy
-jest alfabet; przy d\l ugim s\l owie i kr\'otkim alfabecie wi\k eksze szanse ma
+\paragraph{H4:} Balans szans na zwycięstwo graczy zależy od długości
+słowa i rozmiaru alfabetu. Inserter ma tym większe szanse, im większy
+jest alfabet; przy długim słowie i krótkim alfabecie większe szanse ma
 Pointer.
 
 % --------------------------------------------------------------------------------------------
-\section{Plan eksperyment\'ow}
+\section{Plan eksperymentów}
 
-W celu sprawdzenia powy\.zszych hipotez przeprowadzono seri\k e turniej\'ow
-w trybie AI--AI, w kt\'orych badane warianty algorytm\'ow gra\l y przeciw sobie
-w obu rolach. Wszystkie eksperymenty wykonano z u\.zyciem identycznej liczby
-iteracji MCTS (1000 na ruch) i sta\l ej eksploracji $C=\sqrt{2}$, co odpowiada
-warto\'sciom standardowym w literaturze.
+W celu sprawdzenia powyższych hipotez przeprowadzono serię turniejów
+w trybie AI--AI, w których badane warianty algorytmów grały przeciw sobie
+w obu rolach. Wszystkie eksperymenty wykonano z użyciem identycznej liczby
+iteracji MCTS (1000 na ruch) i stałej eksploracji $C=\sqrt{2}$, co
+odpowiada wartościom standardowym w literaturze.
 
-Ka\.zdy mecz dla ustalonej pary wariant\'ow oraz ustalonych parametr\'ow gry
-($|\Sigma|, L$) sk\l ada\l\ si\k e z 20 partii rozegranych z r\'o\.znymi ziarnami
-RNG (\texttt{base\_seed}=42). Dla badania ca\l ej przestrzeni gry przyj\k eto
-siatk\k e:
+Każdy mecz dla ustalonej pary wariantów oraz ustalonych parametrów gry
+($|\Sigma|, L$) składał się z 20 partii rozegranych z różnymi ziarnami
+RNG (\texttt{base\_seed}=42). Dla badania całej przestrzeni gry przyjęto
+siatkę:
 \begin{itemize}
     \item rozmiar alfabetu $|\Sigma|\in\{3,4,5,6,7,8,9,10\}$,
-    \item maksymalna d\l ugo\'s\'c s\l owa $L\in\{5,10,15,20,25,30,35,40\}$.
+    \item maksymalna długość słowa $L\in\{5,10,15,20,25,30,35,40\}$.
 \end{itemize}
-Daje to 64 konfiguracje dla pojedynczej pary wariant\'ow. \L\k acznie w niniejszym
-raporcie dyskutowanych jest pi\k e\'c zestawie\'n: trzy badane warianty
-(UCB1-Tuned, MCTS-Solver oraz heurystyczna symulacja) zestawione z klasycznym
-UCT, przy czym dla UCB1-Tuned i MCTS-Solver przebadano obie role. \L\k acznie
-odpowiada to $5\times 64\times 20 = 6400$ rozegranym partiom.
+Daje to 64 konfiguracje dla pojedynczej pary wariantów. W niniejszym
+raporcie dyskutowanych jest pięć zestawień: trzy badane warianty
+(UCB1-Tuned, MCTS-Solver oraz heurystyczna symulacja) zestawione
+z klasycznym UCT, przy czym dla UCB1-Tuned i MCTS-Solver przebadano obie
+role. Łącznie odpowiada to $5\times 64\times 20 = 6400$ rozegranym
+partiom.
 
-Klasyczny UCT (oznaczany \emph{Classic}) traktowany jest jako odniesienie i
-zestawiany z ka\.zdym z pozosta\l ych wariant\'ow. Pomiary wykonano w obu
-rolach: raz badany wariant gra jako Pointer (Classic jest Inserterem), raz
-jako Inserter (Classic jest Pointerem). Zabieg ten pozwala oddzieli\'c efekt
-samego algorytmu od efekt\'ow asymetrii r\'ol.
+Klasyczny UCT (oznaczany \emph{Classic}) traktowany jest jako odniesienie
+i zestawiany z każdym z pozostałych wariantów. Pomiary wykonano w obu
+rolach: raz badany wariant gra jako Pointer (Classic jest Inserterem),
+raz jako Inserter (Classic jest Pointerem). Zabieg ten pozwala oddzielić
+efekt samego algorytmu od efektów asymetrii ról.
 
-Wszystkie konfiguracje turniej\'ow zapisano w plikach YAML (katalog
-\texttt{experiments/}); wyniki ka\.zdej partii (m.in.\ zwyci\k esca, liczba
-ruch\'ow, ko\'ncowe s\l owo, czas rozgrywki) zosta\l y zapisane w plikach CSV
-i przekszta\l cone w heatmapy prezentowane w nast\k epnej sekcji.
+Wszystkie konfiguracje turniejów zapisano w plikach YAML; wyniki każdej
+partii (m.in.\ zwycięzca, liczba ruchów, końcowe słowo, czas rozgrywki)
+zostały zapisane w plikach CSV i przekształcone w heatmapy prezentowane
+w następnej sekcji.
 
 % --------------------------------------------------------------------------------------------
-\section{Wyniki eksperyment\'ow}
+\section{Wyniki eksperymentów}
 
-Poni\.zej prezentujemy pi\k e\'c map cieplnych obrazuj\k acych \textbf{odsetek
-wygranych Pointera} dla pi\k eciu r\'o\.znych par wariant\'ow algorytmu.
-Zielony kolor (warto\'s\'c~100) oznacza dominacj\k e Pointera, czerwony (warto\'s\'c~0)
--- dominacj\k e Insertera. Granica ($\approx 50\%$, kolor \.z\'o\l ty) wyznacza
-strefy r\'ownowagi dynamicznej, w kt\'orych wynik gry zale\.zy od jako\'sci AI
-ka\.zdego z graczy.
+Poniżej prezentujemy pięć map cieplnych obrazujących \textbf{odsetek
+wygranych Pointera} dla pięciu różnych par wariantów algorytmu.
+Zielony kolor oznacza przewagę Pointera, czerwony -- przewagę Insertera.
+Granica ($\approx 50\%$, kolor żółty) wyznacza strefy, w których oba
+warianty osiągają zbliżone wyniki.
 
-\subsection{Wp\l yw parametr\'ow gry -- weryfikacja H4}
+\subsection{Wpływ parametrów gry -- weryfikacja H4}
 
-Pierwsze obserwacje dotycz\k a samej gry, niezale\.znie od wariantu algorytmu.
-Wszystkie pi\k e\'c heatmap pokazuje ten sam og\'olny wzorzec:
+Pierwsze obserwacje dotyczą samej gry, niezależnie od wariantu algorytmu.
+Wszystkie pięć heatmap pokazuje ten sam ogólny wzorzec:
 \begin{itemize}
-    \item \textbf{Lewy dolny tr\'ojk\k at} (d\l ugie s\l owa, ma\l y alfabet) jest
-    g\l\k eboko zielony -- Pointer wygrywa praktycznie 100\% partii. Inserter
-    nie ma dostatecznej liczby liter, by unikn\k a\'c powt\'orze\'n.
-    \item \textbf{Prawy g\'orny tr\'ojk\k at} (kr\'otkie s\l owa, du\.zy alfabet) jest
-    g\l\k eboko czerwony -- Inserter wygrywa praktycznie 100\% partii. Du\.zy alfabet
-    daje swobod\k e wyboru bezpiecznej litery, a kr\'otki limit nie zd\k a\.zy
-    wymusi\'c bli\'zniaka.
-    \item \textbf{Pas \'srodkowy} (przek\k atna gridu) zawiera strefy
-    r\'ownowagi, w kt\'orych jako\'s\'c algorytmu mo\.ze przesuwa\'c granic\k e
-    zwyci\k estw.
+    \item \textbf{lewy dolny trójkąt} (długie słowa, mały alfabet) jest
+    głęboko zielony -- Pointer wygrywa praktycznie 100\% partii. Inserter
+    nie ma dostatecznej liczby liter, by uniknąć powtórzeń;
+    \item \textbf{prawy górny trójkąt} (krótkie słowa, duży alfabet) jest
+    głęboko czerwony -- Inserter wygrywa praktycznie 100\% partii. Duży
+    alfabet daje swobodę wyboru bezpiecznej litery, a krótki limit nie
+    zdąży wymusić bliźniaka;
+    \item \textbf{pas środkowy} (przekątna gridu) zawiera strefy
+    wyrównane, w których przewagi nad przeciwnikiem żaden wariant nie
+    uzyskuje całkowicie.
 \end{itemize}
 
-Wynik ten w pe\l ni potwierdza hipotez\k e \textbf{H4}: balans gry jest
-deterministycznie sterowany przez stosunek $L$ do $|\Sigma|$. Z punktu widzenia
-projektanta turniej\'ow oznacza to, \.ze rzetelne por\'ownanie wariant\'ow musi
-by\'c wykonane na \emph{strefie r\'ownowagi} -- w skrajnych obszarach gry
-ka\.zdy w miar\k e rozs\k adny algorytm uzyska wynik 100\% lub 0\%, niezale\.znie
-od subtelno\'sci selekcji.
+Wynik ten w pełni potwierdza hipotezę \textbf{H4}: balans gry zależy
+bezpośrednio od stosunku $L$ do $|\Sigma|$. Z punktu widzenia projektanta
+turniejów oznacza to, że różnice między wariantami algorytmu najwyraźniej
+ujawniają się w strefie wyrównania -- w skrajnych obszarach gry sytuacja
+jest na tyle przesądzona, że jakość selekcji ma niewielkie znaczenie.
 
 \subsection{UCB1-Tuned vs.~klasyczny UCT -- weryfikacja H1}
 
@@ -540,34 +547,48 @@ od subtelno\'sci selekcji.
 \begin{subfigure}[b]{0.48\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/hm_classic_vs_ucb1tuned.png}
-    \caption{UCB1-Tuned w roli Insertera (komplement do warto\'sci podanej w mapie)}
+    \caption{UCB1-Tuned w roli Insertera (komplement do wartości podanej
+    w mapie)}
 \end{subfigure}
 \caption{Konfrontacja UCB1-Tuned z klasycznym UCT.}
 \label{fig:ucb1tuned}
 \end{figure}
 
-Obie heatmapy maj\k a niemal identyczny kszta\l t i przewag\k e Pointera w
-,,domenie Pointera'' oraz Insertera w ,,domenie Insertera''. Subtelne r\'o\.znice
-dotycz\k a strefy r\'ownowagi (przek\k atna gridu). Aby uchwyci\'c je ilo\'sciowo,
-zsumujmy zwyci\k estwa UCB1-Tuned w obu rolach na kilku reprezentatywnych
-polach:
-\begin{itemize}
-    \item $L=20, |\Sigma|=5$: UCB1-Tuned wygrywa 90\% jako Pointer i 15\% jako
-    Inserter (Classic odpowiednio 10\% i 85\%). Suma~$=$~105 vs.~95 -- delikatna
-    przewaga UCB1-Tuned.
-    \item $L=30, |\Sigma|=8$: 75\% i 35\% (Classic 25\%/65\%). Suma~$=$~110
-    vs.~90 -- wyra\'zna przewaga UCB1-Tuned.
-    \item $L=35, |\Sigma|=9$: 85\% i 30\% (Classic 15\%/70\%). 115~vs.~85 --
-    najmocniejsza przewaga UCB1-Tuned w siatce.
-    \item $L=35, |\Sigma|=10$: 25\% i 40\% (Classic 75\%/60\%). 65~vs.~135 --
-    pojedyncze pole, na kt\'orym Classic wygrywa.
-\end{itemize}
+Wzrokowe porównanie obu heatmap sugeruje na pierwszy rzut oka, że są one
+niemal nieodróżnialne -- przewaga Pointera w ,,domenie Pointera'' oraz
+Insertera w ,,domenie Insertera'' jest praktycznie identyczna. Aby
+oszacować różnicę ilościowo, zsumowano odsetki wygranych Pointera
+w każdej z 64 komórek siatki. Wartości te traktujemy jako przybliżony,
+zagregowany ,,wynik turnieju'' obejmujący wszystkich $64\times 20=1280$
+partii reprezentowanych przez heatmapę:
 
-R\'o\.znice te interpretujemy jako \textbf{niewielk\k a, ale konsekwentn\k a
-przewag\k e UCB1-Tuned} w strefie r\'ownowagi. W warunkach skrajnych obie
-strategie radz\k a sobie identycznie (po prostu graj\k a ,,oczywist\k a wygran\k a''
-swojego trybu). Hipoteza \textbf{H1 zostaje uznana za potwierdzon\k a},
-cho\'c spodziewana skala efektu jest mniejsza ni\.z zak\l adali\'smy.
+\begin{table}[H]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Heatmapa & Suma punktów Pointera & Średni odsetek \\
+\midrule
+UCB1-Tuned (Pointer) vs Classic (Inserter) & 3355 & 52,4\% \\
+Classic (Pointer) vs UCB1-Tuned (Inserter) & 3380 & 52,8\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Po przeniesieniu wyników UCB1-Tuned z roli Insertera ,,na drugą stronę''
+otrzymujemy łączny wynik UCB1-Tuned w obu rolach na poziomie
+$\approx 49{,}8\%$ wygranych, podczas gdy klasyczny UCT osiąga
+$\approx 50{,}2\%$. Różnica $0{,}4$ punktu procentowego mieści się
+w naturalnym szumie przy 2560 partiach. \textbf{Hipoteza H1 nie znajduje
+więc potwierdzenia} -- w naszej grze formuła UCB1-Tuned nie różni się
+od klasycznego UCT w żadnym praktycznie istotnym stopniu.
+
+Brak efektu nie zaskakuje aż tak bardzo, jak mogłoby się wydawać. Dynamika
+gry w ciasne bliźniaki jest silnie binarna: w środkowych etapach partii
+węzły mają zazwyczaj odsetek wygranych albo bliski $0$, albo bliski $1$
+(albo trafiamy na pole, w którym Inserter musi się szybko poddać, albo
+mamy bezpieczne kontynuacje). Wariancja $V=p(1-p)$ jest wówczas również
+bliska zeru, więc dodatkowy człon UCB1-Tuned przestaje cokolwiek korygować
+względem klasycznego UCB1.
 
 \subsection{Heurystyka symulacji vs.~klasyczny UCT -- weryfikacja H3}
 
@@ -579,85 +600,75 @@ w roli Insertera.}
 \label{fig:heuristic}
 \end{figure}
 
-W tym uk\l adzie Pointer korzysta z symulacji wzbogaconej (filtruj\k acej
-litery niebezpieczne dla Insertera oraz wymuszaj\k acej deterministyczny wyb\'or
-pozycji o gwarantowanej wygranej). Por\'ownanie z map\k a UCB1-Tuned vs.~Classic
-(\ref{fig:ucb1tuned}) pokazuje, \.ze \textbf{wp\l yw heurystyki symulacji jest
-istotnie wi\k ekszy} ni\.z efekt zmiany formu\l y selekcji:
-\begin{itemize}
-    \item w polu $L=20, |\Sigma|=5$ heurystyczny Pointer wygrywa 95\%
-    (UCB1-Tuned: 90\%, Classic: 100\% w samej domenie),
-    \item w polu $L=25, |\Sigma|=6$ -- a\.z 100\% (UCB1-Tuned: 95\%),
-    \item najbardziej dramatyczna r\'o\.znica wyst\k epuje w polu $L=35,
-    |\Sigma|=8$, gdzie heurystyczny Pointer osi\k aga 100\% (UCB1-Tuned w tym
-    samym polu: 90\%),
-    \item w skrajnych warunkach Insertera (np.\ $L=5, |\Sigma|=8$) heurystyka
-    nie pomaga -- Inserter i tak wygrywa 100\%, bo gra jest dla niego
-    trywialna.
-\end{itemize}
+W tym układzie Pointer korzysta z symulacji wzbogaconej -- filtrującej
+litery niebezpieczne dla Insertera oraz wymuszającej deterministyczny
+wybór pozycji o gwarantowanej wygranej. Heatmapa pokazuje wyraźnie
+poszerzony ,,zielony trójkąt'' wygranych Pointera kosztem strefy
+wyrównania.
 
-Heurystyka silnie poszerza ,,zielony tr\'ojk\k at'' wygranych Pointera kosztem
-strefy r\'ownowagi i obszaru sukcesu Insertera, a zysk jest wyra\'znie wi\k ekszy
-ni\.z dla UCB1-Tuned. Bior\k ac pod uwag\k e fakt, \.ze omawiana modyfikacja jest
-najprostsz\k a do zaimplementowania spo\'sr\'od testowanych, jest to bardzo
-korzystny stosunek kosztu do efektu. \textbf{Hipoteza H3 potwierdza si\k e
-w spos\'ob jednoznaczny}.
+Ilościowo: zagregowany odsetek wygranych heurystycznego Pointera wynosi
+$54{,}3\%$ (suma punktów $3475$), a wynik analogicznego eksperymentu
+w odwróconych rolach (heurystyczny Inserter przeciwko klasycznemu
+Pointerowi) daje $75{,}3\%$ wygranych Insertera. Po zsumowaniu obu ról
+heurystyczna symulacja osiąga $\approx 64\%$ wygranych przeciwko
+klasycznemu UCT, czyli przewagę rzędu $14$ punktów procentowych.
+\textbf{Hipoteza H3 potwierdza się więc jednoznacznie.}
+
+Warto podkreślić, że zysk z heurystycznej symulacji jest niemal o rząd
+wielkości większy niż z wymiany formuły selekcji (UCB1-Tuned), mimo iż
+jest to jedna z prostszych modyfikacji do zaimplementowania. W grach
+o silnie nieliniowej dynamice końcowej (jednoruchowa porażka) jakość
+rolloutu odgrywa kluczową rolę: filtr heurystyczny eliminuje całkowicie
+,,nierealistyczne'' przebiegi, w których losowy Inserter sam wbija się
+w bliźniaka pomimo posiadania bezpiecznych ruchów.
 
 \subsection{MCTS-Solver vs.~klasyczny UCT -- weryfikacja H2A i H2B}
 
-Ze wzgl\k edu na wagi wynik\'ow obu r\'olom MCTS-Solvera po\'swi\k ecamy odr\k ebne
-wykresy.
+Rolom MCTS-Solver poświęcamy odrębne wykresy.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/hm_solver_vs_classic.png}
-\caption{MCTS-Solver w roli Pointera przeciw klasycznemu UCT w roli Insertera.}
+\caption{MCTS-Solver w roli Pointera przeciw klasycznemu UCT w roli
+Insertera.}
 \label{fig:solver_pointer}
 \end{figure}
 
-W tym uk\l adzie MCTS-Solver radzi sobie \emph{przyzwoicie} -- jego wyniki
-s\k a por\'ownywalne z UCB1-Tuned (Rys.~\ref{fig:ucb1tuned}), niekiedy lekko
-gorsze, niekiedy lekko lepsze. \'Swiadczy to o tym, \.ze w roli Pointera
-przedterminowe ko\'ncowe gwarancje s\k a u\.zyteczne: Pointer cz\k esto znajduje
-,,kr\'otki'' dow\'od wygranej -- pozycj\k e w kt\'orej Inserter ma wymuszony
-ruch przegrywaj\k acy w 1--2 krokach.
+W roli Pointera MCTS-Solver radzi sobie podobnie do pozostałych
+wariantów -- jego zagregowany odsetek wygranych wynosi $51{,}2\%$
+(dla porównania UCB1-Tuned $52{,}4\%$). W pozycjach, w których Pointer
+ma szansę na ,,krótki'' dowód wygranej (często wystarczy 1--2 ruchy do
+wymuszenia bliźniaka), propagacja flag udowodnionych mogłaby teoretycznie
+przynieść istotny zysk; w naszych danych takiej przewagi nie widać.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/hm_classic_vs_solver.png}
-\caption{Klasyczny UCT w roli Pointera przeciw MCTS-Solver w roli Insertera --
-wynik diametralnie gorszy ni\.z dla pozosta\l ych wariant\'ow.}
+\caption{Klasyczny UCT w roli Pointera przeciw MCTS-Solver w roli
+Insertera -- wynik wyraźnie gorszy niż dla pozostałych wariantów.}
 \label{fig:solver_inserter}
 \end{figure}
 
-Odwr\'ocony uk\l ad ujawnia \textbf{wyra\'zn\k a patologi\k e}: MCTS-Solver
-w roli Insertera radzi sobie znacznie gorzej ni\.z jakikolwiek inny
-zaimplementowany wariant. Por\'ownanie z map\k a UCB1-Tuned w tej samej roli
-(Rys.~\ref{fig:ucb1tuned}b -- prawa cz\k e\'s\'c) jest druzgoc\k ace:
-\begin{itemize}
-    \item $L=5, |\Sigma|=4$: UCB1-Tuned Inserter wygrywa~100\%, MCTS-Solver
-    Inserter -- jedynie~60\%.
-    \item $L=5, |\Sigma|=8$: UCB1-Tuned Inserter~100\%, Solver~95\%.
-    \item $L=5, |\Sigma|=10$: UCB1-Tuned Inserter~100\%, Solver~75\%.
-    \item $L=10, |\Sigma|=4$: UCB1-Tuned Inserter~10\%, Solver~0\%.
-    \item $L=20, |\Sigma|=6$: UCB1-Tuned Inserter~55\%, Solver~20\%.
-\end{itemize}
-\textbf{Nawet w warunkach trywialnie korzystnych dla Insertera} ($L=5$,
-$|\Sigma|\geq 4$), gdzie nie spos\'ob przegra\'c przy zdrowym rozs\k adku,
-MCTS-Solver przegrywa od kilkunastu do nawet 40\% partii. Co wi\k ecej, mapa
-\ref{fig:solver_inserter} pokazuje wyra\'zne nieuporz\k adkowanie: dla $L=5$
-zwyci\k estwo Insertera nie jest monotoniczn\k a funkcj\k a $|\Sigma|$ (np.\
-$|\Sigma|=8$: 95\%, ale $|\Sigma|=10$: 75\%) -- co sugeruje wp\l yw artefakt\'ow
-algorytmicznych, a nie naturalnej dynamiki gry.
+Odwrócony układ ujawnia natomiast wyraźną regresję: MCTS-Solver w roli
+Insertera przegrywa znacznie częściej niż jakikolwiek inny wariant.
+W skrajnych warunkach faworyzujących Insertera (np.\ $L=5$, $|\Sigma|=10$)
+zwycięża jedynie w $75\%$ partii, podczas gdy zarówno klasyczny UCT, jak
+i UCB1-Tuned, w analogicznych konfiguracjach osiągają $100\%$. Łączny
+zagregowany odsetek wygranych MCTS-Solver w obu rolach wynosi
+$\approx 41{,}8\%$ (klasyczny UCT $\approx 58{,}2\%$); różnica
+$\approx 16$ punktów procentowych jest istotnie większa niż jakakolwiek
+zaobserwowana między pozostałymi wariantami.
 
-Konfrontuj\k ac wyniki z hipotezami:
+Konfrontując wyniki z hipotezami:
 \begin{itemize}
-    \item \textbf{Hipoteza H2A okazuje si\k e fa\l szywa.} MCTS-Solver
-    \emph{nie} jest skuteczniejszy od klasycznego UCT; przeciwnie -- u\'sredniaj\k ac
-    wyniki obu r\'ol, \emph{przegrywa} z Classic na wi\k ekszo\'sci p\'ol siatki.
-    \item \textbf{Hipoteza H2B okazuje si\k e prawdziwa, ale w zaskakuj\k aco silnej
-    formie.} Brak przewagi Solvera ujawnia si\k e nie tylko ,,przy g\l\k ebokim
-    drzewie'', ale praktycznie zawsze, gdy gracz pe\l ni rol\k e Insertera.
+    \item \textbf{Hipoteza H2A okazuje się fałszywa.} MCTS-Solver
+    \emph{nie} jest skuteczniejszy od klasycznego UCT; przeciwnie -- po
+    uśrednieniu wyników w obu rolach \emph{przegrywa} z Classic
+    o kilkanaście punktów procentowych.
+    \item \textbf{Hipoteza H2B okazuje się prawdziwa, ale w mocniejszej
+    formie.} Brak przewagi Solvera ujawnia się nie tylko ,,przy głębokim
+    drzewie'', lecz w niemal całej badanej siatce, gdy gracz pełni rolę
+    Insertera.
 \end{itemize}
 
 % --------------------------------------------------------------------------------------------
@@ -671,115 +682,51 @@ Konfrontuj\k ac wyniki z hipotezami:
 \toprule
 Hipoteza & Wynik & Komentarz \\
 \midrule
-H1 & potwierdzona (s\l aba) & UCB1-Tuned konsekwentnie wygrywa wi\k ecej partii ni\.z
-Classic w strefie r\'ownowagi, ale przewaga jest mniejsza ni\.z oczekiwana
-i ginie w skrajnych obszarach gry. \\
-H2A & \textbf{obalona} & MCTS-Solver przegrywa z Classic w wi\k ekszo\'sci konfiguracji.
-Patologia jest szczeg\'olnie silna w roli Insertera. \\
-H2B & potwierdzona, mocniejsza & Solver nie wykazuje przewagi nawet przy
-ma\l ych drzewach. R\'o\.znica wynika nie z g\l\k eboko\'sci drzewa, lecz z asymetrii
-gry. \\
-H3 & potwierdzona (silna) & Heurystyka symulacji daje najwi\k eksz\k a popraw\k e
-wynik\'ow ze wszystkich badanych zmian. \\
-H4 & potwierdzona & Dynamika gry jest sterowana stosunkiem $L/|\Sigma|$;
-gradient widoczny we wszystkich heatmapach. \\
+H1 & nie potwierdzona & UCB1-Tuned i klasyczny UCT osiągają w obu rolach
+łącznie praktycznie identyczne wyniki ($\approx 49{,}8\%$ vs.\
+$\approx 50{,}2\%$). \\
+H2A & obalona & MCTS-Solver przegrywa z klasycznym UCT o kilkanaście
+punktów procentowych w łącznym odsetku zwycięstw, głównie z powodu
+regresji w roli Insertera. \\
+H2B & potwierdzona, mocniejsza & Solver nie wykazuje przewagi nad
+klasycznym UCT w żadnym fragmencie badanej siatki, niezależnie od
+głębokości drzewa. \\
+H3 & potwierdzona (silna) & Heurystyczna symulacja daje największą
+poprawę spośród badanych modyfikacji ($\approx 64\%$ vs.\ $\approx 36\%$
+dla klasycznego UCT). \\
+H4 & potwierdzona & Wynik gry mocno determinuje stosunek
+$L/|\Sigma|$; gradient widoczny we wszystkich heatmapach. \\
 \bottomrule
 \end{tabular}
 \caption{Status weryfikacji postawionych hipotez.}
 \end{table}
 
-\subsection{Dyskusja patologii MCTS-Solver}
+\subsection{Komentarz do regresji MCTS-Solver}
 
-Zaskakuj\k ace wyniki MCTS-Solver, kt\'ore obali\l y hipotez\k e H2A, zas\l uguj\k a
-na osobn\k a dyskusj\k e. Wariant ten teoretycznie powinien by\'c \emph{zawsze
-nie gorszy} od klasycznego UCT: dodaje on jedynie informacj\k e o gwarantowanych
-wygranych/przegranych, kt\'or\k a potencjalnie mo\.zna zignorowa\'c. Eksperymenty
-pokazuj\k a jednak co\'s przeciwnego.
+Wynik MCTS-Solver wymaga krótkiego komentarza, ponieważ jest sprzeczny
+z teorią -- dodanie informacji o gwarantowanych wygranych i przegranych
+nie powinno pogarszać jakości algorytmu. W naszym przypadku pogarsza
+się ona głównie w roli Insertera, co wskazuje, że źródło problemu nie
+leży w samej idei MCTS-Solver z literatury, lecz w tym, jak jego
+elementy zostały spięte z resztą algorytmu w naszej implementacji.
 
-\paragraph{G\l\'owna hipoteza interpretacyjna.} Po analizie kodu \'r\'od\l owego
-przyczyn\k a patologii wydaje si\k e by\'c interakcja mi\k edzy
-dwoma elementami implementacji:
-\begin{enumerate}
-    \item \textbf{Wybór ostatecznego ruchu w korzeniu drzewa} oparto na
-    \emph{liczbie odwiedzin}, a nie na statusie udowodnionym. Standardowa
-    heurystyka MCTS (,,najcz\k e\'sciej odwiedzane dziecko'') ignoruje fakt, \.ze
-    jedno z dzieci mog\l o zosta\'c oznaczone jako \emph{proven loss}. Je\.zeli
-    takie dziecko zd\k a\.zy\l o nazbiera\'c sporo wizyt zanim zosta\l o udowodnione,
-    pozostaje formalnie ,,najcz\k e\'sciej odwiedzane'' i mo\.ze zosta\'c wybrane
-    jako ruch w grze rzeczywistej -- mimo \.ze jest deterministycznie
-    przegrywaj\k ace.
-    \item \textbf{Asymetria mi\k edzy r\'olami} powoduje, \.ze ,,niesym\-pa\-tyczne''
-    udowodnione w\k ez\l y znacznie cz\k e\'sciej dotycz\k a Insertera ni\.z Pointera.
-    Pointer dowodzi wygranej znajduj\k ac \emph{kr\'otkie} \'scie\.zki do bli\'zniaka
-    (1--2 ruchy), wi\k ec proven win pojawia si\k e w jego subdrzewach \l atwo
-    i u\.zytecznie. Inserter, by udowodni\'c sw\k a wygran\k a, musi pokaza\'c
-    zwyci\k esk\k a kontynuacj\k e a\.z do osi\k agni\k ecia limitu~$L$ -- co przy
-    1000 iteracjach jest mo\.zliwe wy\l\k acznie w trywialnych ko\'nc\'owkach.
-    Kombinatoryka problemu sprawia natomiast, \.ze proven loss dla Insertera
-    bywa udowadniany cz\k esto: wystarczy, by w jego pod\-drzewie pojawi\l\ si\k e
-    fragment, w kt\'orym Pointer ma wymuszone wygrane.
-\end{enumerate}
+Najbardziej prawdopodobnym mechanizmem regresji jest interakcja między
+flagami udowodnionych węzłów a finalnym wyborem ruchu w korzeniu drzewa.
+Klasyczny MCTS wybiera ruch o największej liczbie odwiedzin i to samo
+kryterium zostało zachowane przy włączonym Solverze. Pozostawia to
+otwartą furtkę: dziecko, które przed swoim udowodnieniem zdążyło zebrać
+wiele wizyt (a potem zostało oznaczone jako proven loss i przestało być
+rozwijane), może w finalnym podsumowaniu wciąż okazać się ,,najczęściej
+odwiedzane''. W naszej grze taka sytuacja zdarza się nieproporcjonalnie
+często właśnie po stronie Insertera, ponieważ proven loss bywa tu
+udowadniany szybko, podczas gdy proven win wymagałby dotarcia symulacją
+aż do limitu $L$. To tłumaczy zarówno asymetrię między rolami, jak
+i charakter regresji.
 
-W rezultacie Solver-Inserter ma typowo wi\k ecej w\k ez\l\'ow oznaczonych jako
-proven loss ni\.z proven win. Te w\k ez\l y zd\k a\.zy\l y zgromadzi\'c wizyty
-\emph{przed} udowodnieniem (kiedy jeszcze ka\.zda iteracja przepuszcza\l a
-si\k e przez nie poprzez UCT). Po zako\'nczeniu turniejów iteracji algorytm
-porównuje liczb\k e wizyt -- a w\'sr\'od kandydat\'ow w korzeniu znajduj\k a si\k e:
-\begin{itemize}
-    \item dziecko ,,bezpieczne'' z umiarkowan\k a liczb\k a wizyt,
-    \item dziecko ,,trudne'' (proven loss), kt\'ore otrzyma\l o du\.zo wizyt
-    przed swoim udowodnieniem, a po udowodnieniu po prostu przesta\l o by\'c
-    rozwijane.
-\end{itemize}
-W cz\k e\'sci partii to drugie dziecko ko\'nczy z najwy\.zsz\k a liczb\k a wizyt
-i zostaje wybrane jako ruch -- co wprost prowadzi do przegranej. T\l umaczy
-to zar\'owno og\'olnie gorszy wynik MCTS-Solver Insertera, jak i niemonotoniczne,
-,,szumne'' zachowanie w mapie cieplnej (np.~$L=5$, gdzie $|\Sigma|=8\Rightarrow
-95\%$ wygranych Insertera, ale $|\Sigma|=10\Rightarrow 75\%$).
-
-\paragraph{Sugerowana poprawa.} Aby usun\k a\'c patologi\k e bez zmiany teoretycznej
-poprawno\'sci propagacji, wystarczy\l aby modyfikacja kryterium wyboru
-ostatecznego ruchu w korzeniu drzewa:
-\begin{itemize}
-    \item je\.zeli istnieje dziecko z proven win dla mover-a, wybra\'c je
-    bezwarunkowo,
-    \item w przeciwnym razie wybra\'c najcz\k e\'sciej odwiedzane dziecko
-    \emph{spo\'sr\'od dzieci niepo\'swiadczonych jako proven loss},
-    \item dopiero w ostateczno\'sci (gdy wszystkie dzieci s\k a proven loss)
-    przyzna\'c przegran\k a.
-\end{itemize}
-Modyfikacja ta jest standardowa w literaturze MCTS-Solver \cite{Winands2008},
-ale nie zosta\l a uwzgl\k edniona w naszej pierwotnej implementacji. Stanowi
-to praktyczny wniosek metodyczny: \textbf{korzy\'sci z MCTS-Solver wymagaj\k a
-sp\'ojnego potraktowania udowodnionych etykiet zar\'owno na etapie selekcji
-i propagacji, jak i przy ko\'ncowym wyborze ruchu}.
-
-\subsection{Wnioski og\'olne i kierunki dalszej pracy}
-
-\begin{itemize}
-    \item Najwi\k eksz\k a popraw\k e jako\'sci AI dla badanej gry przyni\'os\l\
-    \emph{najprostszy} z testowanych zabieg\'ow -- heurystyczny filtr w fazie
-    symulacji. Sugeruje to, \.ze w grach o silnie nieliniowej dynamice
-    ko\'ncowej (jednoruchowa pora\.zka) \emph{jako\'s\'c rolloutu} ma znacznie
-    wi\k ekszy wp\l yw ni\.z subtelne korekty w selekcji.
-    \item UCB1-Tuned daje skromny, ale stabilny zysk i mo\.zna go uzna\'c za
-    \emph{drop-in replacement} dla UCT.
-    \item MCTS-Solver, wbrew oczekiwaniom, mo\.ze wprowadza\'c regresje
-    je\'sli nie jest spi\k ety w pe\l ni z mechanizmem wyboru ostatecznego
-    ruchu. W kolejnej iteracji projektu warto:
-    \begin{enumerate}
-        \item poprawi\'c kryterium wyboru ruchu w korzeniu (jak opisano powy\.zej),
-        \item powt\'orzy\'c eksperymenty i sprawdzi\'c, czy poprawiony Solver
-        daje przewag\k e zgodn\k a z hipotez\k a H2A,
-        \item zbada\'c po\l\k aczone konfiguracje (UCB1-Tuned + heurystyczna
-        symulacja + poprawiony Solver + Progressive Bias) w turnieju
-        round-robin.
-    \end{enumerate}
-    \item Z perspektywy metodologicznej praca pokazuje, \.ze por\'ownywanie
-    wariant\'ow MCTS w grach asymetrycznych \emph{musi} obejmowa\'c obie role.
-    Asymetryczne efekty (jak ten zaobserwowany u Solvera) mog\k a si\k e ca\l kowicie
-    skompensowa\'c przy u\'srednianiu ,,po jednej roli'' i pozosta\'c niewykryte.
-\end{itemize}
+Wydaje się więc, że obserwowane zachowanie należy zaliczyć do kategorii
+problemów implementacyjnych -- konkretnie, do niedostatecznie spójnego
+potraktowania udowodnionych etykiet na różnych etapach algorytmu --
+a nie do wad samego MCTS-Solver jako modyfikacji.
 
 \bibliographystyle{plain}
 \bibliography{lit}

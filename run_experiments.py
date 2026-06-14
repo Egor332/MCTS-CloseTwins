@@ -78,7 +78,9 @@ MODIFIED_STRATEGIES: list[tuple[str, PlayerConfig]] = [
     ),
 ]
 
-EXPERIMENTS: list[tuple[str, PlayerConfig, PlayerConfig]] = []
+EXPERIMENTS: list[tuple[str, PlayerConfig, PlayerConfig]] = [
+    ("Classic (Pointer) vs Classic (Inserter)", CLASSIC, CLASSIC),
+]
 for label, modified in MODIFIED_STRATEGIES:
     EXPERIMENTS.append((f"{label} (Pointer) vs Classic (Inserter)", modified, CLASSIC))
     EXPERIMENTS.append((f"Classic (Pointer) vs {label} (Inserter)", CLASSIC, modified))
@@ -168,7 +170,24 @@ def main() -> None:
         "--reset", action="store_true",
         help="Discard the checkpoint and start all experiments from scratch.",
     )
+    parser.add_argument(
+        "--only", type=str, default=None,
+        help=(
+            "Run only experiments whose name contains this substring "
+            "(case-insensitive). Example: --only baseline"
+        ),
+    )
     args = parser.parse_args()
+
+    experiments = EXPERIMENTS
+    if args.only:
+        needle = args.only.lower()
+        experiments = [e for e in EXPERIMENTS if needle in e[0].lower()]
+        if not experiments:
+            available = "\n  ".join(name for name, _, _ in EXPERIMENTS)
+            raise SystemExit(
+                f"No experiment matches --only '{args.only}'. Available:\n  {available}"
+            )
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -179,13 +198,13 @@ def main() -> None:
     ckpt = load_checkpoint()
 
     total_configs = len(MAX_WORD_LENGTHS) * len(ALPHABET_SIZES)
-    total_games = len(EXPERIMENTS) * total_configs * NUM_GAMES
-    print(f"Total: {len(EXPERIMENTS)} experiments × {total_configs} configs × "
+    total_games = len(experiments) * total_configs * NUM_GAMES
+    print(f"Total: {len(experiments)} experiments × {total_configs} configs × "
           f"{NUM_GAMES} games = {total_games} games")
     if ckpt:
         print(f"Resuming from checkpoint ({len(ckpt)} cells already done)\n")
 
-    for exp_name, pointer_cfg, inserter_cfg in EXPERIMENTS:
+    for exp_name, pointer_cfg, inserter_cfg in experiments:
         combos = list(product(enumerate(MAX_WORD_LENGTHS), enumerate(ALPHABET_SIZES)))
 
         already_done = sum(
